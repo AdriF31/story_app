@@ -1,0 +1,17 @@
+{
+  "title":"Story App",
+  "login":"Masuk",
+  "register":"Daftar",
+  "name_error": "Nama tidak boleh kosong",
+  "email_empty_error": "Email tidak boleh kosong",
+  "password_empty_error": "Email tidak boleh kosong",
+  "password_length_error": "Kata sandi minimal 8 karakter",
+  "change_language": "Pilih Bahasa",
+  "dont_have_account": "Belum punya akun? ",
+  "have_account": "Sudah punya akun? ",
+  "password": "Kata Sandi",
+  "email": "Email",
+  "username": "Nama Pengguna",
+  "sign_out": "Keluar",
+  "description": "Deskripsi"
+}

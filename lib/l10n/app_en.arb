@@ -1,0 +1,17 @@
+{
+  "title": "Story App",
+  "login": "Login",
+  "register": "Register",
+  "name_error": "Name can't be empty",
+  "email_empty_error": "Email can't be empty",
+  "password_empty_error": "can't be empty",
+  "password_length_error": "Password minimum 8 character",
+  "change_language": "Choose language",
+  "dont_have_account": "Don't have an account? ",
+  "have_account": "Already have an account? ",
+  "password": "Password",
+  "email": "Email",
+  "username": "Username",
+  "sign_out": "Sign Out",
+  "description": "Description"
+}
