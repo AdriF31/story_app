@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:story_app/pages/story/presentation/cubit/story_cubit.dart';
 import 'package:story_app/pages/story/presentation/post_story/post_story_view.dart';
 
 class PostStoryPage extends StatelessWidget {
@@ -6,6 +8,9 @@ class PostStoryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const PostStoryView();
+    return BlocProvider(
+      create: (context) => StoryCubit()..checkPermission(),
+      child: const PostStoryView(),
+    );
   }
 }

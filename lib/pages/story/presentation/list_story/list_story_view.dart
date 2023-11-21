@@ -25,7 +25,6 @@ class ListStoryView extends StatelessWidget {
       appBar: AppBar(
         title: Text("Story App"),
       ),
-
       endDrawer: Drawer(
         child: SafeArea(child: BlocBuilder<LanguageCubit, LocaleState>(
           builder: (context, state) {
@@ -33,17 +32,16 @@ class ListStoryView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 ListTile(
-                  title:  Text(
+                  title: Text(
                     AppLocalizations.of(context)!.change_language,
                     style: text18WhiteMedium,
                   ),
-                  trailing:
-                  Transform.scale(
+                  trailing: Transform.scale(
                     scale: 0.7,
                     child: AnimatedToggleSwitch.size(
                       fittingMode: FittingMode.preventHorizontalOverlapping,
                       current:
-                      context.read<LanguageCubit>().switchValue ?? false,
+                          context.read<LanguageCubit>().switchValue ?? false,
                       values: const [true, false],
                       onChanged: (value) {
                         print(value);
@@ -59,21 +57,31 @@ class ListStoryView extends StatelessWidget {
                       },
                       styleBuilder: (b) => ToggleStyle(
                           indicatorColor: b ? Colors.blueAccent : Colors.red),
-                      iconBuilder: (value) => value ? Text("EN",style: text14WhiteBold,) : Text("ID",style: text14WhiteBold,),
+                      iconBuilder: (value) => value
+                          ? Text(
+                              "EN",
+                              style: text14WhiteBold,
+                            )
+                          : Text(
+                              "ID",
+                              style: text14WhiteBold,
+                            ),
                     ),
                   ),
                 ),
                 ListTile(
-                  onTap: ()async{
-                    await SecureStorage.deleteAllSecureStorage();
-                    context.go(loginRoute);
-                  },
-                  title:  Text(
-                    AppLocalizations.of(context)!.sign_out,
-                    style: text18WhiteMedium,
-                  ),
-                  trailing:const Icon(FluentIcons.sign_out_24_filled,size: 28,)
-                ),
+                    onTap: () async {
+                      await SecureStorage.deleteAllSecureStorage();
+                      context.go(loginRoute);
+                    },
+                    title: Text(
+                      AppLocalizations.of(context)!.sign_out,
+                      style: text18WhiteMedium,
+                    ),
+                    trailing: const Icon(
+                      FluentIcons.sign_out_24_filled,
+                      size: 28,
+                    )),
               ],
             );
           },
@@ -92,7 +100,7 @@ class ListStoryView extends StatelessWidget {
         builder: (_, state) {
           if (state is OnSuccessGetStory) {
             return RefreshIndicator(
-              onRefresh: ()async{
+              onRefresh: () async {
                 context.read<StoryCubit>().getStories();
               },
               color: primaryColor,
@@ -118,7 +126,8 @@ class ListStoryView extends StatelessWidget {
                                   decoration: BoxDecoration(
                                       shape: BoxShape.circle,
                                       border: Border.all(color: divider)),
-                                  child:const Icon(FluentIcons.person_24_filled),
+                                  child:
+                                      const Icon(FluentIcons.person_24_filled),
                                 ),
                                 const SizedBox(
                                   width: 16,
@@ -137,7 +146,7 @@ class ListStoryView extends StatelessWidget {
                             imageUrl: state.data?.listStory?[index].photoUrl ??
                                 "https://",
                             placeholder: (context, _) {
-                              return  Container(
+                              return Container(
                                 color: divider,
                                 width: double.infinity,
                                 height: 200,
@@ -160,7 +169,8 @@ class ListStoryView extends StatelessWidget {
                                   height: 8,
                                 ),
                                 Text(
-                                  state.data?.listStory?[index].description ?? "",
+                                  state.data?.listStory?[index].description ??
+                                      "",
                                   style: text16WhiteBold,
                                 ),
                               ],

@@ -18,3 +18,22 @@ class OnSuccessGetStory extends StoryState {
 }
 
 class OnErrorGetStory extends StoryState {}
+
+class OnLoadingPostStory extends StoryState {}
+
+class OnSuccessPostStory extends StoryState {
+  Response? data;
+  OnSuccessPostStory({this.data});
+  @override
+  List<Object?> get props => [data];
+}
+
+class OnErrorPostStory extends StoryState {}
+
+
+class OnGetImage extends StoryState{
+  File? file;
+  OnGetImage({this.file});
+  @override
+  List<Object?> get props => [file];
+}
