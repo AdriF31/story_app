@@ -5,12 +5,14 @@ import 'package:story_app/pages/authentication/presentation/pages/register/regis
 import 'package:story_app/pages/splashscreen/splashscreen.dart';
 import 'package:story_app/pages/story/presentation/list_story/list_story_page.dart';
 import 'package:story_app/pages/story/presentation/post_story/post_story_page.dart';
+import 'package:story_app/pages/story/presentation/story_detail/story_detail_page.dart';
 
 const splashScreenRoute = "/";
 const loginRoute = "/login";
 const registerRoute = "/register";
 const listStoryRoute = "/list_story";
 const postStoryRoute = "/postStory";
+const detailStoryRoute = "/detailStory";
 final GoRouter router = GoRouter(routes: <RouteBase>[
   GoRoute(
     path: splashScreenRoute,
@@ -34,12 +36,21 @@ final GoRouter router = GoRouter(routes: <RouteBase>[
     },
   ),
   GoRoute(
-    path: listStoryRoute,
-    name: "list_story",
-    builder: (BuildContext context, GoRouterState state) {
-      return const ListStoryPage();
-    },
-  ),
+      path: listStoryRoute,
+      name: "list_story",
+      builder: (BuildContext context, GoRouterState state) {
+        return const ListStoryPage();
+      },
+      routes: <RouteBase>[]),
+  GoRoute(
+      path: detailStoryRoute,
+      name: "detail_story",
+      builder: (BuildContext context, GoRouterState state) {
+        String? id = state.extra as String;
+        return StoryDetailPage(
+          id: id,
+        );
+      }),
   GoRoute(
     path: postStoryRoute,
     name: "post_story",

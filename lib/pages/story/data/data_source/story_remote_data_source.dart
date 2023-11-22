@@ -97,7 +97,7 @@ class StoryRemoteDataSourceImpl implements StoryRemoteDataSource {
       if (res.statusCode == 200) {
         return StoryDetailModel.fromJson(res.data);
       } else {
-        throw ServerException();
+        throw ServerException(message: res.data['message']);
       }
     } catch (e) {
       throw ServerException();

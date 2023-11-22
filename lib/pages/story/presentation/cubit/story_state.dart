@@ -23,7 +23,12 @@ class OnSuccessGetStory extends StoryState {
   List<Object?> get props => [data, placemark];
 }
 
-class OnErrorGetStory extends StoryState {}
+class OnErrorGetStory extends StoryState {
+  String? message;
+  OnErrorGetStory({this.message});
+  @override
+  List<Object?> get props => [message];
+}
 
 class OnLoadingPostStory extends StoryState {}
 
@@ -37,6 +42,23 @@ class OnSuccessPostStory extends StoryState {
 class OnErrorPostStory extends StoryState {
   String? message;
   OnErrorPostStory({this.message});
+  @override
+  List<Object?> get props => [message];
+}
+
+class OnLoadingGetDetailStory extends StoryState {}
+
+class OnSuccessGetDetailStory extends StoryState {
+  StoryDetailEntity? data;
+  Placemark? placemark;
+  OnSuccessGetDetailStory({this.data, this.placemark});
+  @override
+  List<Object?> get props => [data, placemark];
+}
+
+class OnErrorGetDetailStory extends StoryState {
+  String? message;
+  OnErrorGetDetailStory({this.message});
   @override
   List<Object?> get props => [message];
 }

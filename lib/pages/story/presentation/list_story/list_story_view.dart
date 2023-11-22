@@ -14,13 +14,18 @@ import 'package:story_app/utils/secure_storage.dart';
 import 'package:story_app/utils/theme/color.dart';
 import 'package:story_app/utils/theme/text_style.dart';
 
-class ListStoryView extends StatelessWidget {
+class ListStoryView extends StatefulWidget {
   const ListStoryView({super.key});
 
   @override
+  State<ListStoryView> createState() => _ListStoryViewState();
+}
+
+class _ListStoryViewState extends State<ListStoryView> {
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
+  @override
   Widget build(BuildContext context) {
-    RefreshController _refreshController =
-        RefreshController(initialRefresh: false);
     return Scaffold(
       appBar: AppBar(
         title: Text("Story App"),
@@ -90,31 +95,21 @@ class ListStoryView extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           context.push(postStoryRoute, extra: () {
-            context.read<StoryCubit>().getStories();
+            _onRefresh();
           });
         },
         child: const Icon(FluentIcons.add_24_filled),
       ),
       body: BlocConsumer<StoryCubit, StoryState>(
-        listener: (_, state) {
-          // TODO: implement listener
-        },
+        listener: (_, state) {},
         builder: (_, state) {
           if (state is OnLoadingGetStory && state.isFirstFetch!) {
             return const Center(child: SpinKitDualRing(color: Colors.purple));
           }
           return SmartRefresher(
             controller: _refreshController,
-            onRefresh: () async {
-              context.read<StoryCubit>().page = 0;
-              context.read<StoryCubit>().listStory?.clear();
-              context.read<StoryCubit>().getStories();
-              _refreshController.refreshCompleted();
-            },
-            onLoading: () {
-              context.read<StoryCubit>().getStories();
-              _refreshController.loadComplete();
-            },
+            onRefresh: _onRefresh,
+            onLoading: _onLoad,
             enablePullDown: true,
             enablePullUp: true,
             header: const MaterialClassicHeader(),
@@ -126,90 +121,98 @@ class ListStoryView extends StatelessWidget {
               child: Column(
                 children: List.generate(
                   context.read<StoryCubit>().listStory?.length ?? 0,
-                  (index) => Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Container(
-                                width: 50,
-                                height: 50,
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border: Border.all(color: divider)),
-                                child: const Icon(FluentIcons.person_24_filled),
-                              ),
-                              const SizedBox(
-                                width: 16,
-                              ),
-                              Text(
-                                context
-                                        .read<StoryCubit>()
-                                        .listStory?[index]
-                                        .name ??
-                                    "",
-                                style: text18WhiteBold,
-                              ),
-                            ],
+                  (index) => GestureDetector(
+                    onTap: () {
+                      context.push(detailStoryRoute,
+                          extra:
+                              context.read<StoryCubit>().listStory?[index].id);
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                  width: 50,
+                                  height: 50,
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      border: Border.all(color: divider)),
+                                  child:
+                                      const Icon(FluentIcons.person_24_filled),
+                                ),
+                                const SizedBox(
+                                  width: 16,
+                                ),
+                                Text(
+                                  context
+                                          .read<StoryCubit>()
+                                          .listStory?[index]
+                                          .name ??
+                                      "",
+                                  style: text18WhiteBold,
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        CachedNetworkImage(
-                          imageUrl: context
-                                  .read<StoryCubit>()
-                                  .listStory?[index]
-                                  .photoUrl ??
-                              "https://",
-                          height: MediaQuery.of(context).size.height * 0.7,
-                          width: MediaQuery.of(context).size.width,
-                          fit: BoxFit.fitWidth,
-                          placeholder: (context, _) {
-                            return Container(
-                              color: divider,
-                              width: double.infinity,
-                              height: 200,
-                            );
-                          },
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const SizedBox(
-                                height: 8,
-                              ),
-                              Text(
-                                context
-                                        .read<StoryCubit>()
-                                        .listStory?[index]
-                                        .name ??
-                                    "",
-                                style: text16WhiteBold,
-                              ),
-                              const SizedBox(
-                                height: 8,
-                              ),
-                              Text(
-                                context
-                                        .read<StoryCubit>()
-                                        .listStory?[index]
-                                        .description ??
-                                    "",
-                                style: text16WhiteBold,
-                              ),
-                            ],
+                          const SizedBox(
+                            height: 8,
                           ),
-                        )
-                      ],
+                          CachedNetworkImage(
+                            imageUrl: context
+                                    .read<StoryCubit>()
+                                    .listStory?[index]
+                                    .photoUrl ??
+                                "https://",
+                            height: MediaQuery.of(context).size.height * 0.7,
+                            width: MediaQuery.of(context).size.width,
+                            fit: BoxFit.fitWidth,
+                            placeholder: (context, _) {
+                              return Container(
+                                color: divider,
+                                width: double.infinity,
+                                height: 200,
+                              );
+                            },
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(
+                                  height: 8,
+                                ),
+                                Text(
+                                  context
+                                          .read<StoryCubit>()
+                                          .listStory?[index]
+                                          .name ??
+                                      "",
+                                  style: text16WhiteBold,
+                                ),
+                                const SizedBox(
+                                  height: 8,
+                                ),
+                                Text(
+                                  context
+                                          .read<StoryCubit>()
+                                          .listStory?[index]
+                                          .description ??
+                                      "",
+                                  style: text16WhiteBold,
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -219,5 +222,17 @@ class ListStoryView extends StatelessWidget {
         },
       ),
     );
+  }
+
+  void _onRefresh() {
+    context.read<StoryCubit>().page = 0;
+    context.read<StoryCubit>().listStory?.clear();
+    context.read<StoryCubit>().getStories();
+    _refreshController.refreshCompleted();
+  }
+
+  void _onLoad() {
+    context.read<StoryCubit>().getStories();
+    _refreshController.loadComplete();
   }
 }

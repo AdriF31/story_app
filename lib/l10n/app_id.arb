@@ -13,5 +13,6 @@
   "email": "Email",
   "username": "Nama Pengguna",
   "sign_out": "Keluar",
-  "description": "Deskripsi"
+  "description": "Deskripsi",
+  "error_message": "Terjadi kesalahan..."
 }

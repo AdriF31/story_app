@@ -13,5 +13,6 @@
   "email": "Email",
   "username": "Username",
   "sign_out": "Sign Out",
-  "description": "Description"
+  "description": "Description",
+  "error_message": "Something went wrong..."
 }

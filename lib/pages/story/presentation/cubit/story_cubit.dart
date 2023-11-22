@@ -7,6 +7,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:meta/meta.dart';
 import 'package:story_app/di/injection.dart';
+import 'package:story_app/pages/story/domain/entities/story_detail_entity.dart';
 import 'package:story_app/pages/story/domain/entities/story_entity.dart';
 import 'package:story_app/pages/story/domain/use_cases/story_use_case.dart';
 
@@ -26,7 +27,7 @@ class StoryCubit extends Cubit<StoryState> {
     try {
       var res = await storyUseCase.getStories(
           location: location, page: page, size: size);
-      res.fold((l) => emit(OnErrorGetStory()), (r) {
+      res.fold((l) => emit(OnErrorGetStory(message: l.message)), (r) {
         if ((listStory ?? []).isNotEmpty) {
           listStory?.addAll(r.listStory ?? []);
         } else {
@@ -37,6 +38,17 @@ class StoryCubit extends Cubit<StoryState> {
       });
     } catch (e) {
       emit(OnErrorGetStory());
+    }
+  }
+
+  void getDetailStories({String? id}) async {
+    emit(OnLoadingGetDetailStory());
+    try {
+      var res = await storyUseCase.getDetailStory(id);
+      res.fold((l) => emit(OnErrorGetDetailStory()),
+          (r) => emit(OnSuccessGetDetailStory(data: r)));
+    } catch (e) {
+      emit(OnErrorGetDetailStory());
     }
   }
 
@@ -60,8 +72,8 @@ class StoryCubit extends Cubit<StoryState> {
     try {
       XFile? file = await ImagePicker().pickImage(source: ImageSource.gallery);
       if (file != null) {
-        photo = File(file?.path ?? "");
-        emit(OnGetImage(file: File(file?.path ?? "")));
+        photo = File(file.path);
+        emit(OnGetImage(file: File(file.path)));
       }
     } catch (e) {
       rethrow;
