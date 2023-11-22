@@ -11,10 +11,12 @@ class AuthUseCase {
 
   Future<Either<Failure, LoginEntity>> login(
       {String? name, String? email, String? password}) {
-    return authRepository.login( email: email, password: password);
+    return authRepository.login(email: email, password: password);
   }
+
   Future<Either<Failure, Response>> register(
       {String? name, String? email, String? password}) {
-    return authRepository.register(name: name, email: email, password: password);
+    return authRepository.register(
+        name: name, email: email, password: password);
   }
 }

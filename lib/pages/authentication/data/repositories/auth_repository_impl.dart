@@ -15,22 +15,25 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<Either<Failure, LoginEntity>> login(
       {String? email, String? password}) async {
     try {
-      var res = await authRemoteDataSource.login(email: email, password: password);
+      var res =
+          await authRemoteDataSource.login(email: email, password: password);
       return Right(res);
-    } on ServerException {
-      return const Left(ServerFailure("An error has Occured"));
+    } on ServerException catch (e) {
+      return Left(ServerFailure(e.message));
     } on SocketException {
       return const Left(ConnectionFailure("Check your internet connection"));
     }
   }
 
   @override
-  Future<Either<Failure, Response>> register({String? name, String? email, String? password})async {
+  Future<Either<Failure, Response>> register(
+      {String? name, String? email, String? password}) async {
     try {
-      var res = await authRemoteDataSource.register(name:name,email: email, password: password);
+      var res = await authRemoteDataSource.register(
+          name: name, email: email, password: password);
       return Right(res);
-    } on ServerException {
-      return const Left(ServerFailure("An error has Occured"));
+    } on ServerException catch (e) {
+      return Left(ServerFailure(e.message));
     } on SocketException {
       return const Left(ConnectionFailure("Check your internet connection"));
     }

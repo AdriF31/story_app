@@ -1,6 +1,7 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:story_app/common.dart';
 import 'package:story_app/pages/authentication/presentation/bloc/auth/auth_bloc.dart';
@@ -30,7 +31,11 @@ class LoginView extends StatelessWidget {
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (_, state) {
           if (state is AuthLoginSuccess) {
+            Fluttertoast.showToast(msg: state.data?.message ?? "");
             context.go(listStoryRoute);
+          }
+          if (state is AuthLoginError) {
+            Fluttertoast.showToast(msg: state.message ?? "");
           }
           if (state is Obscured) {
             isObscured = state.isObscured;
@@ -53,7 +58,7 @@ class LoginView extends StatelessWidget {
                             Text(
                               AppLocalizations.of(context)!.email,
                               semanticsLabel: "Email",
-                              style:text18WhiteRegular,
+                              style: text18WhiteRegular,
                             ),
                             const SizedBox(
                               height: 12,
@@ -87,7 +92,7 @@ class LoginView extends StatelessWidget {
                           Text(
                             AppLocalizations.of(context)!.password,
                             semanticsLabel: "Password",
-                            style:text18WhiteRegular,
+                            style: text18WhiteRegular,
                           ),
                           const SizedBox(
                             height: 12,
@@ -104,13 +109,11 @@ class LoginView extends StatelessWidget {
                                 suffixIcon: IconButton(
                                     onPressed: () {
                                       if (isObscured!) {
-                                        context
-                                            .read<AuthBloc>()
-                                            .add(ObscurePassword(isObscure: false));
+                                        context.read<AuthBloc>().add(
+                                            ObscurePassword(isObscure: false));
                                       } else {
-                                        context
-                                            .read<AuthBloc>()
-                                            .add(ObscurePassword(isObscure: true));
+                                        context.read<AuthBloc>().add(
+                                            ObscurePassword(isObscure: true));
                                       }
                                     },
                                     icon: Icon(isObscured!
@@ -121,7 +124,7 @@ class LoginView extends StatelessWidget {
                                 return AppLocalizations.of(context)!
                                     .password_empty_error;
                               }
-                              if(value.length<8){
+                              if (value.length < 8) {
                                 return AppLocalizations.of(context)!
                                     .password_length_error;
                               }
@@ -157,7 +160,7 @@ class LoginView extends StatelessWidget {
                                 onTap: () {
                                   context.push("/register");
                                 },
-                                child:  Text(
+                                child: Text(
                                   AppLocalizations.of(context)!.register,
                                   style: text14WhiteBold,
                                 ),

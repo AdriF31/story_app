@@ -1,18 +1,16 @@
 part of 'auth_bloc.dart';
 
 @immutable
-abstract class AuthState extends Equatable{
+abstract class AuthState extends Equatable {
   @override
   List<Object?> get props => [];
 }
 
-class AuthInitial extends AuthState {
+class AuthInitial extends AuthState {}
 
-}
+class AuthLoginLoading extends AuthState {}
 
-class AuthLoginLoading extends AuthState{}
-
-class AuthLoginSuccess extends AuthState{
+class AuthLoginSuccess extends AuthState {
   LoginEntity? data;
   AuthLoginSuccess({this.data});
 
@@ -20,27 +18,34 @@ class AuthLoginSuccess extends AuthState{
   List<Object?> get props => [data];
 }
 
-class AuthLoginError extends AuthState{}
-
-class AuthRegisterLoading extends AuthState{}
-
-class AuthRegisterSuccess extends AuthState{
-  Response? data;
-  AuthRegisterSuccess({this.data});
-
+class AuthLoginError extends AuthState {
+  String? message;
+  AuthLoginError({this.message});
   @override
-  List<Object?> get props => [data];
+  List<Object?> get props => [message];
 }
 
-class AuthRegisterError extends AuthState{}
+class AuthRegisterLoading extends AuthState {}
 
-class Obscured extends AuthState{
+class AuthRegisterSuccess extends AuthState {
+  String? message;
+  AuthRegisterSuccess({this.message});
+
+  @override
+  List<Object?> get props => [message];
+}
+
+class AuthRegisterError extends AuthState {
+  String? message;
+  AuthRegisterError({this.message});
+  @override
+  List<Object?> get props => [message];
+}
+
+class Obscured extends AuthState {
   bool? isObscured;
   Obscured({this.isObscured});
   @override
   // TODO: implement props
   List<Object?> get props => [isObscured];
 }
-
-
-
