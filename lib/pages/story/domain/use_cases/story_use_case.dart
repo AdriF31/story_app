@@ -12,8 +12,10 @@ import '../../../../di/injection.dart';
 class StoryUseCase {
   final StoryRepository storyRepository = sl<StoryRepository>();
 
-  Future<Either<Failure, StoryEntity>> getStories() {
-    return storyRepository.getListStory();
+  Future<Either<Failure, StoryEntity>> getStories(
+      {int? location, int? page, int? size}) {
+    return storyRepository.getListStory(
+        location: location, page: page, size: size);
   }
 
   Future<Either<Failure, StoryDetailEntity>> getDetailStory(String? id) {

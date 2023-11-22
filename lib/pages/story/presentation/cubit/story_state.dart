@@ -8,7 +8,12 @@ abstract class StoryState extends Equatable {
 
 class StoryInitial extends StoryState {}
 
-class OnLoadingGetStory extends StoryState {}
+class OnLoadingGetStory extends StoryState {
+  bool? isFirstFetch;
+  OnLoadingGetStory({this.isFirstFetch});
+  @override
+  List<Object?> get props => [isFirstFetch];
+}
 
 class OnSuccessGetStory extends StoryState {
   StoryEntity? data;

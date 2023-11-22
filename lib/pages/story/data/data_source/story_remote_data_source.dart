@@ -9,7 +9,7 @@ import 'package:story_app/pages/story/data/models/story_model.dart';
 import 'package:story_app/utils/secure_storage.dart';
 
 abstract class StoryRemoteDataSource {
-  Future<StoryModel> getStory();
+  Future<StoryModel> getStory({int? location, int? page, int? size});
 
   Future<Response> postStory(
       {File? file, String? description, double? lat, double? lon});
@@ -21,12 +21,17 @@ class StoryRemoteDataSourceImpl implements StoryRemoteDataSource {
   Network network = sl<Network>();
 
   @override
-  Future<StoryModel> getStory() async {
+  Future<StoryModel> getStory({int? location, int? page, int? size}) async {
     try {
-      var res = await network.dio.get("/stories",
-          options: Options(headers: {
+      var res = await network.dio.get(
+        "/stories",
+        queryParameters: {"location": location, "page": page, "size": size},
+        options: Options(
+          headers: {
             "Authorization": "bearer ${await SecureStorage.getToken()}"
-          }));
+          },
+        ),
+      );
       if (res.statusCode == 200) {
         return StoryModel.fromJson(res.data);
       } else {
@@ -43,23 +48,31 @@ class StoryRemoteDataSourceImpl implements StoryRemoteDataSource {
     try {
       String? fileName = file?.path.split('/').last;
       FormData data = lat != null && lat != 0 && lon != null && lon != 0
-          ? FormData.fromMap({
-              'photo': await MultipartFile.fromFile(file?.path ?? "",
-                  filename: fileName),
-              'description': description,
-              'lat': lat,
-              'lon': lon
-            })
-          : FormData.fromMap({
-              'photo': await MultipartFile.fromFile(file?.path ?? "",
-                  filename: fileName),
-              'description': description,
-            });
-      var res = await network.dio.post("/stories",
-          data: data,
-          options: Options(headers: {
+          ? FormData.fromMap(
+              {
+                'photo': await MultipartFile.fromFile(file?.path ?? "",
+                    filename: fileName),
+                'description': description,
+                'lat': lat,
+                'lon': lon
+              },
+            )
+          : FormData.fromMap(
+              {
+                'photo': await MultipartFile.fromFile(file?.path ?? "",
+                    filename: fileName),
+                'description': description,
+              },
+            );
+      var res = await network.dio.post(
+        "/stories",
+        data: data,
+        options: Options(
+          headers: {
             "Authorization": "bearer ${await SecureStorage.getToken()}"
-          }));
+          },
+        ),
+      );
       if (res.statusCode == 201) {
         return res;
       } else {
@@ -73,10 +86,14 @@ class StoryRemoteDataSourceImpl implements StoryRemoteDataSource {
   @override
   Future<StoryDetailModel> getDetailStory(String? id) async {
     try {
-      var res = await network.dio.get("/stories/$id",
-          options: Options(headers: {
+      var res = await network.dio.get(
+        "/stories/$id",
+        options: Options(
+          headers: {
             "Authorization": "bearer ${await SecureStorage.getToken()}"
-          }));
+          },
+        ),
+      );
       if (res.statusCode == 200) {
         return StoryDetailModel.fromJson(res.data);
       } else {

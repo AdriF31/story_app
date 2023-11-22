@@ -14,9 +14,11 @@ class StoryRepositoryImpl extends StoryRepository {
   StoryRemoteDataSource storyRemoteDataSource = sl<StoryRemoteDataSource>();
 
   @override
-  Future<Either<Failure, StoryEntity>> getListStory() async {
+  Future<Either<Failure, StoryEntity>> getListStory(
+      {int? location, int? page, int? size}) async {
     try {
-      var res = await storyRemoteDataSource.getStory();
+      var res = await storyRemoteDataSource.getStory(
+          location: location, page: page, size: size);
       return Right(res);
     } on ServerException {
       return const Left(ServerFailure("An error has Occured"));

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:story_app/common.dart';
 import 'package:story_app/pages/story/presentation/cubit/language_cubit/language_cubit.dart';
 import 'package:story_app/pages/story/presentation/cubit/story_cubit.dart';
@@ -18,6 +19,8 @@ class ListStoryView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    RefreshController _refreshController =
+        RefreshController(initialRefresh: false);
     return Scaffold(
       appBar: AppBar(
         title: Text("Story App"),
@@ -97,96 +100,122 @@ class ListStoryView extends StatelessWidget {
           // TODO: implement listener
         },
         builder: (_, state) {
-          if (state is OnSuccessGetStory) {
-            return RefreshIndicator(
-              onRefresh: () async {
-                context.read<StoryCubit>().getStories();
-              },
-              color: primaryColor,
-              backgroundColor: white,
-              child: SingleChildScrollView(
-                child: Column(
-                  children: List.generate(
-                    state.data?.listStory?.length ?? 0,
-                    (index) => Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Container(
-                                  width: 50,
-                                  height: 50,
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      border: Border.all(color: divider)),
-                                  child:
-                                      const Icon(FluentIcons.person_24_filled),
-                                ),
-                                const SizedBox(
-                                  width: 16,
-                                ),
-                                Text(
-                                  state.data?.listStory?[index].name ?? "",
-                                  style: text18WhiteBold,
-                                ),
-                              ],
-                            ),
+          if (state is OnLoadingGetStory && state.isFirstFetch!) {
+            return const Center(child: SpinKitDualRing(color: Colors.purple));
+          }
+          return SmartRefresher(
+            controller: _refreshController,
+            onRefresh: () async {
+              context.read<StoryCubit>().page = 0;
+              context.read<StoryCubit>().listStory?.clear();
+              context.read<StoryCubit>().getStories();
+              _refreshController.refreshCompleted();
+            },
+            onLoading: () {
+              context.read<StoryCubit>().getStories();
+              _refreshController.loadComplete();
+            },
+            enablePullDown: true,
+            enablePullUp: true,
+            header: const MaterialClassicHeader(),
+            footer: const ClassicFooter(
+              loadStyle: LoadStyle.ShowWhenLoading,
+              completeDuration: Duration(milliseconds: 1000),
+            ),
+            child: SingleChildScrollView(
+              child: Column(
+                children: List.generate(
+                  context.read<StoryCubit>().listStory?.length ?? 0,
+                  (index) => Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                width: 50,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    border: Border.all(color: divider)),
+                                child: const Icon(FluentIcons.person_24_filled),
+                              ),
+                              const SizedBox(
+                                width: 16,
+                              ),
+                              Text(
+                                context
+                                        .read<StoryCubit>()
+                                        .listStory?[index]
+                                        .name ??
+                                    "",
+                                style: text18WhiteBold,
+                              ),
+                            ],
                           ),
-                          const SizedBox(
-                            height: 8,
+                        ),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        CachedNetworkImage(
+                          imageUrl: context
+                                  .read<StoryCubit>()
+                                  .listStory?[index]
+                                  .photoUrl ??
+                              "https://",
+                          height: MediaQuery.of(context).size.height * 0.7,
+                          width: MediaQuery.of(context).size.width,
+                          fit: BoxFit.fitWidth,
+                          placeholder: (context, _) {
+                            return Container(
+                              color: divider,
+                              width: double.infinity,
+                              height: 200,
+                            );
+                          },
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              Text(
+                                context
+                                        .read<StoryCubit>()
+                                        .listStory?[index]
+                                        .name ??
+                                    "",
+                                style: text16WhiteBold,
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              Text(
+                                context
+                                        .read<StoryCubit>()
+                                        .listStory?[index]
+                                        .description ??
+                                    "",
+                                style: text16WhiteBold,
+                              ),
+                            ],
                           ),
-                          CachedNetworkImage(
-                            imageUrl: state.data?.listStory?[index].photoUrl ??
-                                "https://",
-                            height: MediaQuery.of(context).size.height * 0.7,
-                            width: MediaQuery.of(context).size.width,
-                            fit: BoxFit.fitWidth,
-                            placeholder: (context, _) {
-                              return Container(
-                                color: divider,
-                                width: double.infinity,
-                                height: 200,
-                              );
-                            },
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 8),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                Text(
-                                  state.data?.listStory?[index].name ?? "",
-                                  style: text16WhiteBold,
-                                ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                Text(
-                                  state.data?.listStory?[index].description ??
-                                      "",
-                                  style: text16WhiteBold,
-                                ),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
+                        )
+                      ],
                     ),
                   ),
                 ),
               ),
-            );
-          }
-          return Center(child: const SpinKitDualRing(color: Colors.purple));
+            ),
+          );
         },
       ),
     );

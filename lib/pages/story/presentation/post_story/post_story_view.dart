@@ -68,8 +68,6 @@ class _PostStoryViewState extends State<PostStoryView> {
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
                   children: [
-                    Text(state.toString()),
-                    Text(widget.callback.toString()),
                     GestureDetector(
                       onTap: () {
                         context.read<StoryCubit>().getImage();

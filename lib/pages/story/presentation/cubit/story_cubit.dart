@@ -18,13 +18,23 @@ class StoryCubit extends Cubit<StoryState> {
   List<Placemark>? placemarks;
   File? photo;
   Position? position;
+  int page = 0;
+  List<ListStoryEntity>? listStory;
 
-  void getStories() async {
-    emit(OnLoadingGetStory());
+  void getStories({int? location = 0, int? size = 15}) async {
+    emit(OnLoadingGetStory(isFirstFetch: page == 0 ? true : false));
     try {
-      var res = await storyUseCase.getStories();
-      res.fold((l) => emit(OnErrorGetStory()),
-          (r) => emit(OnSuccessGetStory(data: r)));
+      var res = await storyUseCase.getStories(
+          location: location, page: page, size: size);
+      res.fold((l) => emit(OnErrorGetStory()), (r) {
+        if ((listStory ?? []).isNotEmpty) {
+          listStory?.addAll(r.listStory ?? []);
+        } else {
+          listStory = r.listStory;
+        }
+        page++;
+        emit(OnSuccessGetStory(data: r));
+      });
     } catch (e) {
       emit(OnErrorGetStory());
     }
