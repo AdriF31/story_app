@@ -14,18 +14,25 @@ import 'package:story_app/utils/secure_storage.dart';
 import 'package:story_app/utils/theme/color.dart';
 import 'package:story_app/utils/theme/text_style.dart';
 
-class ListStoryView extends StatefulWidget {
+class ListStoryView extends StatelessWidget {
   const ListStoryView({super.key});
 
   @override
-  State<ListStoryView> createState() => _ListStoryViewState();
-}
-
-class _ListStoryViewState extends State<ListStoryView> {
-  RefreshController _refreshController =
-      RefreshController(initialRefresh: false);
-  @override
   Widget build(BuildContext context) {
+    RefreshController refreshController =
+        RefreshController(initialRefresh: false);
+    void onRefresh() {
+      context.read<StoryCubit>().page = 0;
+      context.read<StoryCubit>().listStory?.clear();
+      context.read<StoryCubit>().getStories();
+      refreshController.refreshCompleted();
+    }
+
+    void onLoad() {
+      context.read<StoryCubit>().getStories();
+      refreshController.loadComplete();
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Story App"),
@@ -95,7 +102,7 @@ class _ListStoryViewState extends State<ListStoryView> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           context.push(postStoryRoute, extra: () {
-            _onRefresh();
+            onRefresh();
           });
         },
         child: const Icon(FluentIcons.add_24_filled),
@@ -107,9 +114,9 @@ class _ListStoryViewState extends State<ListStoryView> {
             return const Center(child: SpinKitDualRing(color: Colors.purple));
           }
           return SmartRefresher(
-            controller: _refreshController,
-            onRefresh: _onRefresh,
-            onLoading: _onLoad,
+            controller: refreshController,
+            onRefresh: onRefresh,
+            onLoading: onLoad,
             enablePullDown: true,
             enablePullUp: true,
             header: const MaterialClassicHeader(),
@@ -222,17 +229,5 @@ class _ListStoryViewState extends State<ListStoryView> {
         },
       ),
     );
-  }
-
-  void _onRefresh() {
-    context.read<StoryCubit>().page = 0;
-    context.read<StoryCubit>().listStory?.clear();
-    context.read<StoryCubit>().getStories();
-    _refreshController.refreshCompleted();
-  }
-
-  void _onLoad() {
-    context.read<StoryCubit>().getStories();
-    _refreshController.loadComplete();
   }
 }
