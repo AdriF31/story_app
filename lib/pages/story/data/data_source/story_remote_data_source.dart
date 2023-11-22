@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:story_app/core/error/exception.dart';
 import 'package:story_app/core/network.dart';
 import 'package:story_app/di/injection.dart';
+import 'package:story_app/pages/story/data/models/story_detail_model.dart';
 import 'package:story_app/pages/story/data/models/story_model.dart';
 import 'package:story_app/utils/secure_storage.dart';
 
@@ -12,6 +13,8 @@ abstract class StoryRemoteDataSource {
 
   Future<Response> postStory(
       {File? file, String? description, double? lat, double? lon});
+
+  Future<StoryDetailModel> getDetailStory(String? id);
 }
 
 class StoryRemoteDataSourceImpl implements StoryRemoteDataSource {
@@ -53,6 +56,23 @@ class StoryRemoteDataSourceImpl implements StoryRemoteDataSource {
           }));
       if (res.statusCode == 200) {
         return res;
+      } else {
+        throw ServerException();
+      }
+    } catch (e) {
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<StoryDetailModel> getDetailStory(String? id) async {
+    try {
+      var res = await network.dio.get("/stories/$id",
+          options: Options(headers: {
+            "Authorization": "bearer ${await SecureStorage.getToken()}"
+          }));
+      if (res.statusCode == 200) {
+        return StoryDetailModel.fromJson(res.data);
       } else {
         throw ServerException();
       }

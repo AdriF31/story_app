@@ -26,11 +26,11 @@ class RegisterView extends StatelessWidget {
       ),
       body: Center(
         child: BlocConsumer<AuthBloc, AuthState>(
-          listener: (_,state){
-            if(state is AuthRegisterSuccess){
+          listener: (_, state) {
+            if (state is AuthRegisterSuccess) {
               context.go(loginRoute);
             }
-            if(state is Obscured){
+            if (state is Obscured) {
               isObscured = state.isObscured;
             }
           },
@@ -42,7 +42,6 @@ class RegisterView extends StatelessWidget {
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
                     children: [
-                      Text(state.toString()),
                       Semantics(
                         label: "Username TextField",
                         child: Column(
@@ -51,7 +50,7 @@ class RegisterView extends StatelessWidget {
                             Text(
                               AppLocalizations.of(context)!.username,
                               semanticsLabel: "Username",
-                              style:text18WhiteRegular,
+                              style: text18WhiteRegular,
                             ),
                             const SizedBox(
                               height: 12,
@@ -78,7 +77,8 @@ class RegisterView extends StatelessWidget {
                       ),
                       const SizedBox(
                         height: 24,
-                      ), Semantics(
+                      ),
+                      Semantics(
                         label: "Email TextField",
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -86,7 +86,7 @@ class RegisterView extends StatelessWidget {
                             Text(
                               AppLocalizations.of(context)!.email,
                               semanticsLabel: "Email",
-                              style:text18WhiteRegular,
+                              style: text18WhiteRegular,
                             ),
                             const SizedBox(
                               height: 12,
@@ -120,7 +120,7 @@ class RegisterView extends StatelessWidget {
                           Text(
                             AppLocalizations.of(context)!.password,
                             semanticsLabel: "Password",
-                            style:text18WhiteRegular,
+                            style: text18WhiteRegular,
                           ),
                           const SizedBox(
                             height: 12,
@@ -137,13 +137,11 @@ class RegisterView extends StatelessWidget {
                                 suffixIcon: IconButton(
                                     onPressed: () {
                                       if (isObscured!) {
-                                        context
-                                            .read<AuthBloc>()
-                                            .add(ObscurePassword(isObscure: false));
+                                        context.read<AuthBloc>().add(
+                                            ObscurePassword(isObscure: false));
                                       } else {
-                                        context
-                                            .read<AuthBloc>()
-                                            .add(ObscurePassword(isObscure: true));
+                                        context.read<AuthBloc>().add(
+                                            ObscurePassword(isObscure: true));
                                       }
                                     },
                                     icon: Icon(isObscured!
@@ -154,7 +152,7 @@ class RegisterView extends StatelessWidget {
                                 return AppLocalizations.of(context)!
                                     .password_empty_error;
                               }
-                              if(value.length<8){
+                              if (value.length < 8) {
                                 return AppLocalizations.of(context)!
                                     .password_length_error;
                               }
@@ -170,7 +168,7 @@ class RegisterView extends StatelessWidget {
                         onPressed: () {
                           if (form.currentState!.validate()) {
                             context.read<AuthBloc>().add(OnRegister(
-                              name: nameController.text,
+                                name: nameController.text,
                                 email: emailController.text,
                                 password: passwordController.text));
                           }
@@ -191,7 +189,7 @@ class RegisterView extends StatelessWidget {
                                 onTap: () {
                                   context.pop();
                                 },
-                                child:  Text(
+                                child: Text(
                                   AppLocalizations.of(context)!.login,
                                   style: text14WhiteBold,
                                 ),
