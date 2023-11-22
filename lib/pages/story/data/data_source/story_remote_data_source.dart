@@ -42,13 +42,19 @@ class StoryRemoteDataSourceImpl implements StoryRemoteDataSource {
       {File? file, String? description, double? lat, double? lon}) async {
     try {
       String? fileName = file?.path.split('/').last;
-      FormData data = FormData.fromMap({
-        'photo':
-            await MultipartFile.fromFile(file?.path ?? "", filename: fileName),
-        'description': description,
-        'lat': lat,
-        'lon': lon
-      });
+      FormData data = lat != null && lat != 0 && lon != null && lon != 0
+          ? FormData.fromMap({
+              'photo': await MultipartFile.fromFile(file?.path ?? "",
+                  filename: fileName),
+              'description': description,
+              'lat': lat,
+              'lon': lon
+            })
+          : FormData.fromMap({
+              'photo': await MultipartFile.fromFile(file?.path ?? "",
+                  filename: fileName),
+              'description': description,
+            });
       var res = await network.dio.post("/stories",
           data: data,
           options: Options(headers: {
