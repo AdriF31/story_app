@@ -1,8 +1,7 @@
 import 'package:animated_toggle_switch/animated_toggle_switch.dart';
-import 'package:app_settings/app_settings.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:go_router/go_router.dart';
@@ -10,9 +9,7 @@ import 'package:story_app/common.dart';
 import 'package:story_app/pages/story/presentation/cubit/language_cubit/language_cubit.dart';
 import 'package:story_app/pages/story/presentation/cubit/story_cubit.dart';
 import 'package:story_app/routes/routes.dart';
-import 'package:story_app/utils/elevated_button_widget.dart';
 import 'package:story_app/utils/secure_storage.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:story_app/utils/theme/color.dart';
 import 'package:story_app/utils/theme/text_style.dart';
 
@@ -41,11 +38,11 @@ class ListStoryView extends StatelessWidget {
                     child: AnimatedToggleSwitch.size(
                       fittingMode: FittingMode.preventHorizontalOverlapping,
                       current:
-                          context.read<LanguageCubit>().switchValue ?? false,
+                          context.read<LanguageCubit>().switchValue ?? true,
                       values: const [true, false],
                       onChanged: (value) {
                         print(value);
-                        if (value!) {
+                        if (value) {
                           context
                               .read<LanguageCubit>()
                               .getLanguage(value: value, code: 'en');
@@ -58,11 +55,11 @@ class ListStoryView extends StatelessWidget {
                       styleBuilder: (b) => ToggleStyle(
                           indicatorColor: b ? Colors.blueAccent : Colors.red),
                       iconBuilder: (value) => value
-                          ? Text(
+                          ? const Text(
                               "EN",
                               style: text14WhiteBold,
                             )
-                          : Text(
+                          : const Text(
                               "ID",
                               style: text14WhiteBold,
                             ),
@@ -89,7 +86,9 @@ class ListStoryView extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          context.push(postStoryRoute);
+          context.push(postStoryRoute, extra: () {
+            context.read<StoryCubit>().getStories();
+          });
         },
         child: const Icon(FluentIcons.add_24_filled),
       ),
@@ -145,6 +144,9 @@ class ListStoryView extends StatelessWidget {
                           CachedNetworkImage(
                             imageUrl: state.data?.listStory?[index].photoUrl ??
                                 "https://",
+                            height: MediaQuery.of(context).size.height * 0.7,
+                            width: MediaQuery.of(context).size.width,
+                            fit: BoxFit.fitWidth,
                             placeholder: (context, _) {
                               return Container(
                                 color: divider,

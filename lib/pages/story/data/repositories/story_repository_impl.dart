@@ -32,8 +32,8 @@ class StoryRepositoryImpl extends StoryRepository {
       var res = await storyRemoteDataSource.postStory(
           file: file, description: description, lat: lat, lon: lon);
       return Right(res);
-    } on ServerException {
-      return const Left(ServerFailure("An error has Occured"));
+    } on ServerException catch (e) {
+      return Left(ServerFailure(e.message));
     } on SocketException {
       return const Left(ConnectionFailure("Check your internet connection"));
     }

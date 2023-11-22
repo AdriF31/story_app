@@ -1,16 +1,19 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:story_app/common.dart';
 import 'package:story_app/pages/story/presentation/cubit/story_cubit.dart';
 import 'package:story_app/utils/app_decoration.dart';
 import 'package:story_app/utils/elevated_button_widget.dart';
 import 'package:story_app/utils/theme/color.dart';
 import 'package:story_app/utils/theme/text_style.dart';
-import 'package:image_picker/image_picker.dart';
 
 class PostStoryView extends StatefulWidget {
-  const PostStoryView({super.key});
+  const PostStoryView({super.key, this.callback});
+  final VoidCallback? callback;
 
   @override
   State<PostStoryView> createState() => _PostStoryViewState();
@@ -44,7 +47,19 @@ class _PostStoryViewState extends State<PostStoryView> {
           },
         ),
       ),
-      body: BlocBuilder<StoryCubit, StoryState>(
+      body: BlocConsumer<StoryCubit, StoryState>(
+        listener: (_, state) {
+          if (state is OnSuccessPostStory) {
+            Fluttertoast.showToast(msg: state.message ?? "");
+            if (widget.callback != null) {
+              widget.callback!();
+            }
+            context.pop();
+          }
+          if (state is OnErrorPostStory) {
+            Fluttertoast.showToast(msg: state.message ?? "");
+          }
+        },
         builder: (_, state) {
           return Form(
             key: form,
@@ -53,6 +68,8 @@ class _PostStoryViewState extends State<PostStoryView> {
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
                   children: [
+                    Text(state.toString()),
+                    Text(widget.callback.toString()),
                     GestureDetector(
                       onTap: () {
                         context.read<StoryCubit>().getImage();

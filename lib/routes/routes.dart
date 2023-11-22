@@ -34,17 +34,20 @@ final GoRouter router = GoRouter(routes: <RouteBase>[
     },
   ),
   GoRoute(
-      path: listStoryRoute,
-      name: "list_story",
-      builder: (BuildContext context, GoRouterState state) {
-        return const ListStoryPage();
-      },
-     ),
+    path: listStoryRoute,
+    name: "list_story",
+    builder: (BuildContext context, GoRouterState state) {
+      return const ListStoryPage();
+    },
+  ),
   GoRoute(
     path: postStoryRoute,
     name: "post_story",
     builder: (BuildContext context, GoRouterState state) {
-      return const PostStoryPage();
+      VoidCallback? callback = state.extra as VoidCallback;
+      return PostStoryPage(
+        callback: callback,
+      );
     },
   )
 ]);

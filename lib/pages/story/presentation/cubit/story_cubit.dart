@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
-import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:meta/meta.dart';
@@ -15,7 +15,7 @@ part 'story_state.dart';
 class StoryCubit extends Cubit<StoryState> {
   StoryCubit() : super(StoryInitial());
   StoryUseCase storyUseCase = sl<StoryUseCase>();
-
+  List<Placemark>? placemarks;
   File? photo;
   Position? position;
 
@@ -35,9 +35,12 @@ class StoryCubit extends Cubit<StoryState> {
     emit(OnLoadingPostStory());
     try {
       var res = await storyUseCase.postStory(
-          file: photo, description: description, lat: position?.latitude ?? 0, lon: position?.longitude ?? 0);
-      res.fold((l) => emit(OnErrorPostStory()),
-          (r) => emit(OnSuccessPostStory(data: r)));
+          file: photo,
+          description: description,
+          lat: position?.latitude ?? 0,
+          lon: position?.longitude ?? 0);
+      res.fold((l) => emit(OnErrorPostStory(message: l.message)),
+          (r) => emit(OnSuccessPostStory(message: r.data['message'])));
     } catch (e) {
       emit(OnErrorPostStory());
     }

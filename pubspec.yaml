@@ -35,6 +35,7 @@ dependencies:
   another_flushbar: ^1.12.30
   geolocator: ^10.1.0
   fluttertoast: ^8.2.4
+  geocoding: ^2.1.1
 
 dev_dependencies:
   flutter_test:

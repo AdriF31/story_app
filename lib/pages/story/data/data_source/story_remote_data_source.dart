@@ -54,13 +54,13 @@ class StoryRemoteDataSourceImpl implements StoryRemoteDataSource {
           options: Options(headers: {
             "Authorization": "bearer ${await SecureStorage.getToken()}"
           }));
-      if (res.statusCode == 200) {
+      if (res.statusCode == 201) {
         return res;
       } else {
-        throw ServerException();
+        throw ServerException(message: res.data['message']);
       }
-    } catch (e) {
-      throw ServerException();
+    } on DioException catch (e) {
+      throw ServerException(message: e.response?.data?['message']);
     }
   }
 
