@@ -106,7 +106,7 @@ class ListStoryView extends StatelessWidget {
             onRefresh();
           });
         },
-        child: const Icon(FluentIcons.add_24_filled),
+        child: const Icon(FluentIcons.pen_24_regular),
       ),
       body: BlocConsumer<StoryCubit, StoryState>(
         listener: (_, state) {
@@ -116,7 +116,11 @@ class ListStoryView extends StatelessWidget {
         },
         builder: (_, state) {
           if (state is OnLoadingGetStory && state.isFirstFetch!) {
-            return const Center(child: SpinKitDualRing(color: Colors.purple));
+            return const Center(
+                child: SpinKitThreeBounce(
+              color: primaryColor,
+              size: 40,
+            ));
           }
           return SmartRefresher(
             controller: refreshController,

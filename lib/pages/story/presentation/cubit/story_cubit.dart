@@ -77,7 +77,10 @@ class StoryCubit extends Cubit<StoryState> {
 
   void getImage({required ImageSource source}) async {
     try {
-      XFile? file = await ImagePicker().pickImage(source: source);
+      XFile? file = await ImagePicker().pickImage(
+        source: source,
+        imageQuality: 30,
+      );
       if (file != null) {
         photo = File(file.path);
         emit(OnGetImage(file: File(file.path)));
@@ -90,8 +93,10 @@ class StoryCubit extends Cubit<StoryState> {
   checkPermission() async {
     try {
       LocationPermission? permission = await Geolocator.checkPermission();
+
       if (permission == LocationPermission.denied ||
           permission == LocationPermission.deniedForever) {
+        print("permission: $permission");
         await Geolocator.requestPermission();
       } else {
         getPosition();

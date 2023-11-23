@@ -60,7 +60,7 @@ class StoryDetailView extends StatelessWidget {
                       placeholder: (context, url) {
                         return Container(
                           height: 300,
-                          color: tertiary,
+                          color: divider,
                         );
                       },
                     ),
@@ -78,6 +78,7 @@ class StoryDetailView extends StatelessWidget {
           }
           return const Center(
             child: SpinKitThreeBounce(
+              size: 40,
               color: primaryColor,
             ),
           );

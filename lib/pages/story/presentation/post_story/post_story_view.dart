@@ -11,15 +11,26 @@ import 'package:story_app/utils/elevated_button_widget.dart';
 import 'package:story_app/utils/theme/color.dart';
 import 'package:story_app/utils/theme/text_style.dart';
 
-class PostStoryView extends StatelessWidget {
+class PostStoryView extends StatefulWidget {
   const PostStoryView({super.key, this.callback});
   final VoidCallback? callback;
 
   @override
+  State<PostStoryView> createState() => _PostStoryViewState();
+}
+
+class _PostStoryViewState extends State<PostStoryView> {
+  TextEditingController controller = TextEditingController();
+
+  GlobalKey<FormState> form = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    TextEditingController controller = TextEditingController();
-    GlobalKey<FormState> form = GlobalKey<FormState>();
-    StoryCubit cubit = StoryCubit();
     return Scaffold(
       appBar: AppBar(
         title: Text("Post Story"),
@@ -27,12 +38,14 @@ class PostStoryView extends StatelessWidget {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(16),
         child: BlocBuilder<StoryCubit, StoryState>(
-          bloc: cubit,
           builder: (_, state) {
             return ElevatedButtonWidget(
               onPressed: () {
-                if (form.currentState!.validate() && cubit.photo != null) {
-                  cubit.postStory(description: controller.text);
+                if (form.currentState!.validate() &&
+                    context.read<StoryCubit>().photo != null) {
+                  context
+                      .read<StoryCubit>()
+                      .postStory(description: controller.text);
                 } else {
                   Fluttertoast.showToast(msg: "Isi semua field");
                 }
@@ -44,12 +57,11 @@ class PostStoryView extends StatelessWidget {
         ),
       ),
       body: BlocConsumer<StoryCubit, StoryState>(
-        bloc: cubit,
         listener: (_, state) {
           if (state is OnSuccessPostStory) {
             Fluttertoast.showToast(msg: state.message ?? "");
-            if (callback != null) {
-              callback!();
+            if (widget.callback != null) {
+              widget.callback!();
             }
             context.pop();
           }
@@ -57,7 +69,7 @@ class PostStoryView extends StatelessWidget {
             Fluttertoast.showToast(msg: state.message ?? "");
           }
         },
-        builder: (_, state) {
+        builder: (context, state) {
           return Form(
             key: form,
             child: SingleChildScrollView(
@@ -67,68 +79,7 @@ class PostStoryView extends StatelessWidget {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        showDialog(
-                            context: context,
-                            builder: (context) {
-                              return Dialog(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(24.0),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Text("Pilih SOurce"),
-                                      const SizedBox(
-                                        height: 24,
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          GestureDetector(
-                                            onTap: () {
-                                              cubit.getImage(
-                                                  source: ImageSource.camera);
-                                              context.pop();
-                                            },
-                                            child: Column(
-                                              children: [
-                                                Icon(
-                                                  FluentIcons.camera_24_filled,
-                                                  size: 50,
-                                                ),
-                                                Text(
-                                                  "Kamera",
-                                                  style: text18WhiteMedium,
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                          GestureDetector(
-                                            onTap: () {
-                                              cubit.getImage(
-                                                  source: ImageSource.gallery);
-                                              context.pop();
-                                            },
-                                            child: Column(
-                                              children: [
-                                                Icon(
-                                                  FluentIcons.image_24_filled,
-                                                  size: 50,
-                                                ),
-                                                Text(
-                                                  "Galeri",
-                                                  style: text18WhiteMedium,
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              );
-                            });
+                        openDialog(context);
                         // context.read<StoryCubit>().getImage();
                       },
                       child: Container(
@@ -137,9 +88,9 @@ class PostStoryView extends StatelessWidget {
                           border: Border.all(color: divider),
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: cubit.photo != null
+                        child: context.read<StoryCubit>().photo != null
                             ? Image.file(
-                                cubit.photo!,
+                                context.read<StoryCubit>().photo!,
                                 height: 200,
                                 fit: BoxFit.fitWidth,
                               )
@@ -191,5 +142,71 @@ class PostStoryView extends StatelessWidget {
         },
       ),
     );
+  }
+
+  void openDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (_) {
+          return Dialog(
+            child: Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text("Pilih SOurce"),
+                  const SizedBox(
+                    height: 24,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          context
+                              .read<StoryCubit>()
+                              .getImage(source: ImageSource.camera);
+                          context.pop();
+                        },
+                        child: Column(
+                          children: [
+                            Icon(
+                              FluentIcons.camera_24_filled,
+                              size: 50,
+                            ),
+                            Text(
+                              "Kamera",
+                              style: text18WhiteMedium,
+                            )
+                          ],
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          context
+                              .read<StoryCubit>()
+                              .getImage(source: ImageSource.gallery);
+                          context.pop();
+                        },
+                        child: Column(
+                          children: [
+                            Icon(
+                              FluentIcons.image_24_filled,
+                              size: 50,
+                            ),
+                            Text(
+                              "Galeri",
+                              style: text18WhiteMedium,
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          );
+        });
   }
 }
