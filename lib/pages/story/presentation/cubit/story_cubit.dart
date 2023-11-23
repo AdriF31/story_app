@@ -10,6 +10,7 @@ import 'package:story_app/di/injection.dart';
 import 'package:story_app/pages/story/domain/entities/story_detail_entity.dart';
 import 'package:story_app/pages/story/domain/entities/story_entity.dart';
 import 'package:story_app/pages/story/domain/use_cases/story_use_case.dart';
+import 'package:story_app/utils/check_connection.dart';
 
 part 'story_state.dart';
 
@@ -25,17 +26,23 @@ class StoryCubit extends Cubit<StoryState> {
   void getStories({int? location = 0, int? size = 15}) async {
     emit(OnLoadingGetStory(isFirstFetch: page == 0 ? true : false));
     try {
-      var res = await storyUseCase.getStories(
-          location: location, page: page, size: size);
-      res.fold((l) => emit(OnErrorGetStory(message: l.message)), (r) {
-        if ((listStory ?? []).isNotEmpty) {
-          listStory?.addAll(r.listStory ?? []);
-        } else {
-          listStory = r.listStory;
-        }
-        page++;
-        emit(OnSuccessGetStory(data: r));
-      });
+      bool connection = await checkConnection();
+      print(connection);
+      if (connection) {
+        var res = await storyUseCase.getStories(
+            location: location, page: page, size: size);
+        res.fold((l) => emit(OnErrorGetStory(message: l.message)), (r) {
+          if ((listStory ?? []).isNotEmpty) {
+            listStory?.addAll(r.listStory ?? []);
+          } else {
+            listStory = r.listStory;
+          }
+          page++;
+          emit(OnSuccessGetStory(data: r));
+        });
+      } else {
+        emit(OnErrorGetStory(message: "Check your connection"));
+      }
     } catch (e) {
       emit(OnErrorGetStory());
     }
@@ -68,9 +75,9 @@ class StoryCubit extends Cubit<StoryState> {
     }
   }
 
-  void getImage() async {
+  void getImage({required ImageSource source}) async {
     try {
-      XFile? file = await ImagePicker().pickImage(source: ImageSource.gallery);
+      XFile? file = await ImagePicker().pickImage(source: source);
       if (file != null) {
         photo = File(file.path);
         emit(OnGetImage(file: File(file.path)));

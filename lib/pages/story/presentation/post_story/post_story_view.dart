@@ -11,19 +11,15 @@ import 'package:story_app/utils/elevated_button_widget.dart';
 import 'package:story_app/utils/theme/color.dart';
 import 'package:story_app/utils/theme/text_style.dart';
 
-class PostStoryView extends StatefulWidget {
+class PostStoryView extends StatelessWidget {
   const PostStoryView({super.key, this.callback});
   final VoidCallback? callback;
 
   @override
-  State<PostStoryView> createState() => _PostStoryViewState();
-}
-
-class _PostStoryViewState extends State<PostStoryView> {
-  @override
   Widget build(BuildContext context) {
     TextEditingController controller = TextEditingController();
     GlobalKey<FormState> form = GlobalKey<FormState>();
+    StoryCubit cubit = StoryCubit();
     return Scaffold(
       appBar: AppBar(
         title: Text("Post Story"),
@@ -31,14 +27,14 @@ class _PostStoryViewState extends State<PostStoryView> {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(16),
         child: BlocBuilder<StoryCubit, StoryState>(
+          bloc: cubit,
           builder: (_, state) {
             return ElevatedButtonWidget(
               onPressed: () {
-                if (form.currentState!.validate() &&
-                    context.read<StoryCubit>().photo != null) {
-                  context
-                      .read<StoryCubit>()
-                      .postStory(description: controller.text);
+                if (form.currentState!.validate() && cubit.photo != null) {
+                  cubit.postStory(description: controller.text);
+                } else {
+                  Fluttertoast.showToast(msg: "Isi semua field");
                 }
               },
               buttonText: "post",
@@ -48,11 +44,12 @@ class _PostStoryViewState extends State<PostStoryView> {
         ),
       ),
       body: BlocConsumer<StoryCubit, StoryState>(
+        bloc: cubit,
         listener: (_, state) {
           if (state is OnSuccessPostStory) {
             Fluttertoast.showToast(msg: state.message ?? "");
-            if (widget.callback != null) {
-              widget.callback!();
+            if (callback != null) {
+              callback!();
             }
             context.pop();
           }
@@ -70,7 +67,69 @@ class _PostStoryViewState extends State<PostStoryView> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        context.read<StoryCubit>().getImage();
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return Dialog(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(24.0),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text("Pilih SOurce"),
+                                      const SizedBox(
+                                        height: 24,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {
+                                              cubit.getImage(
+                                                  source: ImageSource.camera);
+                                              context.pop();
+                                            },
+                                            child: Column(
+                                              children: [
+                                                Icon(
+                                                  FluentIcons.camera_24_filled,
+                                                  size: 50,
+                                                ),
+                                                Text(
+                                                  "Kamera",
+                                                  style: text18WhiteMedium,
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                          GestureDetector(
+                                            onTap: () {
+                                              cubit.getImage(
+                                                  source: ImageSource.gallery);
+                                              context.pop();
+                                            },
+                                            child: Column(
+                                              children: [
+                                                Icon(
+                                                  FluentIcons.image_24_filled,
+                                                  size: 50,
+                                                ),
+                                                Text(
+                                                  "Galeri",
+                                                  style: text18WhiteMedium,
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              );
+                            });
+                        // context.read<StoryCubit>().getImage();
                       },
                       child: Container(
                         height: 200,
@@ -78,9 +137,9 @@ class _PostStoryViewState extends State<PostStoryView> {
                           border: Border.all(color: divider),
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: context.read<StoryCubit>().photo != null
+                        child: cubit.photo != null
                             ? Image.file(
-                                context.read<StoryCubit>().photo!,
+                                cubit.photo!,
                                 height: 200,
                                 fit: BoxFit.fitWidth,
                               )
@@ -132,13 +191,5 @@ class _PostStoryViewState extends State<PostStoryView> {
         },
       ),
     );
-  }
-
-  _pickImage() async {
-    try {
-      XFile? file = await ImagePicker().pickImage(source: ImageSource.gallery);
-    } catch (e) {
-      rethrow;
-    }
   }
 }

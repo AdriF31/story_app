@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:story_app/core/error/exception.dart';
 import 'package:story_app/core/network.dart';
@@ -6,11 +8,13 @@ import 'package:story_app/pages/authentication/data/models/login_model.dart';
 
 abstract class AuthRemoteDataSource {
   Future<LoginModel> login({String? email, String? password});
+
   Future<Response> register({String? name, String? email, String? password});
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   Network network = sl<Network>();
+
   @override
   Future<LoginModel> login({String? email, String? password}) async {
     try {
@@ -22,7 +26,12 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         throw ServerException(message: res.data?['message']);
       }
     } on DioException catch (e) {
-      throw ServerException(message: e.response?.data['message']);
+      if (e.type == DioExceptionType.connectionError ||
+          e.type == DioExceptionType.connectionTimeout) {
+        throw const SocketException("Check your internet connection");
+      } else {
+        throw ServerException(message: e.response?.data['message']);
+      }
     }
   }
 
@@ -38,7 +47,12 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         throw ServerException(message: res.data['message']);
       }
     } on DioException catch (e) {
-      throw ServerException(message: e.response?.data['message']);
+      if (e.type == DioExceptionType.connectionError ||
+          e.type == DioExceptionType.connectionTimeout) {
+        throw const SocketException("Check your internet connection");
+      } else {
+        throw ServerException(message: e.response?.data['message']);
+      }
     }
   }
 }

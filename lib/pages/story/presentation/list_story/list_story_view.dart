@@ -4,6 +4,7 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:story_app/common.dart';
@@ -35,7 +36,7 @@ class ListStoryView extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Story App"),
+        title: const Text("Story App"),
       ),
       endDrawer: Drawer(
         child: SafeArea(child: BlocBuilder<LanguageCubit, LocaleState>(
@@ -108,7 +109,11 @@ class ListStoryView extends StatelessWidget {
         child: const Icon(FluentIcons.add_24_filled),
       ),
       body: BlocConsumer<StoryCubit, StoryState>(
-        listener: (_, state) {},
+        listener: (_, state) {
+          if (state is OnErrorGetStory) {
+            Fluttertoast.showToast(msg: state.message ?? "");
+          }
+        },
         builder: (_, state) {
           if (state is OnLoadingGetStory && state.isFirstFetch!) {
             return const Center(child: SpinKitDualRing(color: Colors.purple));

@@ -9,7 +9,7 @@ class PostStoryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
+    return BlocProvider<StoryCubit>(
       create: (context) => StoryCubit()..checkPermission(),
       child: PostStoryView(
         callback: callback,

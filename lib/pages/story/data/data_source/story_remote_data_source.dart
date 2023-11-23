@@ -6,6 +6,7 @@ import 'package:story_app/core/network.dart';
 import 'package:story_app/di/injection.dart';
 import 'package:story_app/pages/story/data/models/story_detail_model.dart';
 import 'package:story_app/pages/story/data/models/story_model.dart';
+import 'package:story_app/utils/check_connection.dart';
 import 'package:story_app/utils/secure_storage.dart';
 
 abstract class StoryRemoteDataSource {
@@ -23,22 +24,31 @@ class StoryRemoteDataSourceImpl implements StoryRemoteDataSource {
   @override
   Future<StoryModel> getStory({int? location, int? page, int? size}) async {
     try {
-      var res = await network.dio.get(
-        "/stories",
-        queryParameters: {"location": location, "page": page, "size": size},
-        options: Options(
-          headers: {
-            "Authorization": "bearer ${await SecureStorage.getToken()}"
-          },
-        ),
-      );
-      if (res.statusCode == 200) {
-        return StoryModel.fromJson(res.data);
+      if (await checkConnection()) {
+        var res = await network.dio.get(
+          "/stories",
+          queryParameters: {"location": location, "page": page, "size": size},
+          options: Options(
+            headers: {
+              "Authorization": "bearer ${await SecureStorage.getToken()}"
+            },
+          ),
+        );
+        if (res.statusCode == 200) {
+          return StoryModel.fromJson(res.data);
+        } else {
+          throw ServerException(message: res.data?['message']);
+        }
       } else {
-        throw ServerException();
+        throw SocketException("check your connection");
       }
-    } catch (e) {
-      throw ServerException();
+    } on DioException catch (e) {
+      if (e.type == DioExceptionType.connectionError ||
+          e.type == DioExceptionType.connectionTimeout) {
+        throw const SocketException("Check your internet connection");
+      } else {
+        throw ServerException(message: e.response?.data['message']);
+      }
     }
   }
 
@@ -79,7 +89,12 @@ class StoryRemoteDataSourceImpl implements StoryRemoteDataSource {
         throw ServerException(message: res.data['message']);
       }
     } on DioException catch (e) {
-      throw ServerException(message: e.response?.data?['message']);
+      if (e.type == DioExceptionType.connectionError ||
+          e.type == DioExceptionType.connectionTimeout) {
+        throw const SocketException("Check your internet connection");
+      } else {
+        throw ServerException(message: e.response?.data['message']);
+      }
     }
   }
 
@@ -99,8 +114,13 @@ class StoryRemoteDataSourceImpl implements StoryRemoteDataSource {
       } else {
         throw ServerException(message: res.data['message']);
       }
-    } catch (e) {
-      throw ServerException();
+    } on DioException catch (e) {
+      if (e.type == DioExceptionType.connectionError ||
+          e.type == DioExceptionType.connectionTimeout) {
+        throw const SocketException("Check your internet connection");
+      } else {
+        throw ServerException(message: e.response?.data['message']);
+      }
     }
   }
 }
