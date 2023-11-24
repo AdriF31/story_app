@@ -8,7 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:story_app/common.dart';
-import 'package:story_app/pages/story/presentation/cubit/language_cubit/language_cubit.dart';
+import 'package:story_app/core/language/language_cubit.dart';
 import 'package:story_app/pages/story/presentation/cubit/story_cubit.dart';
 import 'package:story_app/routes/routes.dart';
 import 'package:story_app/utils/secure_storage.dart';

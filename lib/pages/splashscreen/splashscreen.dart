@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:story_app/routes/routes.dart';
 import 'package:story_app/utils/secure_storage.dart';
+import 'package:story_app/utils/theme/text_style.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -33,12 +34,14 @@ class _SplashScreenState extends State<SplashScreen> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
       body: Center(
-        child: Text("Story App"),
+        child: Text(
+          "Story App",
+          style: text18WhiteBold,
+        ),
       ),
     );
   }

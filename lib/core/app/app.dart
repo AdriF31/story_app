@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:story_app/pages/story/presentation/cubit/language_cubit/language_cubit.dart';
+import 'package:story_app/core/language/language_cubit.dart';
 import 'package:story_app/routes/routes.dart';
 import 'package:story_app/utils/theme/app_theme.dart';
 
@@ -18,7 +18,8 @@ class App extends StatelessWidget {
           return MaterialApp.router(
             title: "Story App",
             debugShowCheckedModeBanner: false,
-            locale: Locale(state is LocaleInitial? state.locale??"en":'en'),
+            locale:
+                Locale(state is LocaleInitial ? state.locale ?? "en" : 'en'),
             supportedLocales: const [
               Locale('en', 'US'),
               Locale('id', 'ID'),
