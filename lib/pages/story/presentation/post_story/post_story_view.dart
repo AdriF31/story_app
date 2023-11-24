@@ -47,7 +47,8 @@ class _PostStoryViewState extends State<PostStoryView> {
                       .read<StoryCubit>()
                       .postStory(description: controller.text);
                 } else {
-                  Fluttertoast.showToast(msg: "Isi semua field");
+                  Fluttertoast.showToast(
+                      msg: AppLocalizations.of(context)!.field_warning_message);
                 }
               },
               buttonText: "post",
@@ -118,7 +119,7 @@ class _PostStoryViewState extends State<PostStoryView> {
                           minLines: 1,
                           maxLines: 5,
                           decoration: customInputDecoration(
-                            hintText: "Deskripsi",
+                            hintText: AppLocalizations.of(context)!.description,
                             prefixIcon: const Icon(
                               FluentIcons.pen_24_regular,
                               size: 28,

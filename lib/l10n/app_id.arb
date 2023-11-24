@@ -14,5 +14,6 @@
   "username": "Nama Pengguna",
   "sign_out": "Keluar",
   "description": "Deskripsi",
-  "error_message": "Terjadi kesalahan..."
+  "error_message": "Terjadi kesalahan...",
+  "field_warning_message": "Isi semua field"
 }

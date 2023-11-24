@@ -14,5 +14,6 @@
   "username": "Username",
   "sign_out": "Sign Out",
   "description": "Description",
-  "error_message": "Something went wrong..."
+  "error_message": "Something went wrong...",
+  "field_warning_message": "Fill in all fields"
 }
