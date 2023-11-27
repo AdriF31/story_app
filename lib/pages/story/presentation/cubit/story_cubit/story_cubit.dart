@@ -1,21 +1,21 @@
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:meta/meta.dart';
 import 'package:story_app/di/injection.dart';
 import 'package:story_app/pages/story/domain/entities/story_detail_entity.dart';
 import 'package:story_app/pages/story/domain/entities/story_entity.dart';
 import 'package:story_app/pages/story/domain/use_cases/story_use_case.dart';
 import 'package:story_app/utils/check_connection.dart';
 
+part 'story_cubit.freezed.dart';
 part 'story_state.dart';
 
 class StoryCubit extends Cubit<StoryState> {
-  StoryCubit() : super(StoryInitial());
+  StoryCubit() : super(const StoryState.initial());
   StoryUseCase storyUseCase = sl<StoryUseCase>();
   List<Placemark>? placemarks;
   File? photo;
@@ -24,54 +24,53 @@ class StoryCubit extends Cubit<StoryState> {
   List<ListStoryEntity>? listStory;
 
   void getStories({int? location = 0, int? size = 15}) async {
-    emit(OnLoadingGetStory(isFirstFetch: page == 0 ? true : false));
+    if (page == 0) {
+      emit(StoryState.loadingGetStory(isFirstFetch: page == 0 ? true : false));
+    }
     try {
       bool connection = await checkConnection();
-      print(connection);
       if (connection) {
         var res = await storyUseCase.getStories(
             location: location, page: page, size: size);
-        res.fold((l) => emit(OnErrorGetStory(message: l.message)), (r) {
+        res.fold((l) => emit(StoryState.errorGetStory(message: l.message)),
+            (r) {
           if ((listStory ?? []).isNotEmpty) {
             listStory?.addAll(r.listStory ?? []);
           } else {
             listStory = r.listStory;
           }
           page++;
-          emit(OnSuccessGetStory(data: r));
+          emit(StoryState.successGetStory(data: r));
         });
       } else {
-        emit(OnErrorGetStory(message: "Check your connection"));
+        emit(StoryState.errorGetStory(message: "Check your connection"));
       }
     } catch (e) {
-      emit(OnErrorGetStory());
+      emit(StoryState.errorGetStory());
     }
   }
 
   void getDetailStories({String? id}) async {
-    emit(OnLoadingGetDetailStory());
+    emit(StoryState.loadingGetDetailStory());
     try {
       var res = await storyUseCase.getDetailStory(id);
-      res.fold((l) => emit(OnErrorGetDetailStory()),
-          (r) => emit(OnSuccessGetDetailStory(data: r)));
+      res.fold((l) => emit(StoryState.errorGetDetailStory()),
+          (r) => emit(StoryState.successGetDetailStory(data: r)));
     } catch (e) {
-      emit(OnErrorGetDetailStory());
+      emit(StoryState.errorGetDetailStory());
     }
   }
 
   void postStory(
       {File? file, String? description, double? lat, double? lon}) async {
-    emit(OnLoadingPostStory());
+    emit(StoryState.loadingPostStory());
     try {
       var res = await storyUseCase.postStory(
-          file: photo,
-          description: description,
-          lat: position?.latitude ?? 0,
-          lon: position?.longitude ?? 0);
-      res.fold((l) => emit(OnErrorPostStory(message: l.message)),
-          (r) => emit(OnSuccessPostStory(message: r.data['message'])));
+          file: photo, description: description, lat: lat, lon: lon);
+      res.fold((l) => emit(StoryState.errorPostStory(message: l.message)),
+          (r) => emit(StoryState.successPostStory(message: r.data['message'])));
     } catch (e) {
-      emit(OnErrorPostStory());
+      emit(StoryState.errorPostStory());
     }
   }
 
@@ -83,34 +82,8 @@ class StoryCubit extends Cubit<StoryState> {
       );
       if (file != null) {
         photo = File(file.path);
-        emit(OnGetImage(file: File(file.path)));
+        emit(StoryState.getImage(file: File(file.path)));
       }
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  checkPermission() async {
-    try {
-      LocationPermission? permission = await Geolocator.checkPermission();
-
-      if (permission == LocationPermission.denied ||
-          permission == LocationPermission.deniedForever) {
-        print("permission: $permission");
-        await Geolocator.requestPermission();
-      } else {
-        getPosition();
-      }
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  getPosition() async {
-    try {
-      position = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.best,
-          forceAndroidLocationManager: true);
     } catch (e) {
       rethrow;
     }

@@ -4,6 +4,7 @@
   "register":"Daftar",
   "name_error": "Nama tidak boleh kosong",
   "email_empty_error": "Email tidak boleh kosong",
+  "email_not_valid": "Masukkan email yang valid",
   "password_empty_error": "Email tidak boleh kosong",
   "password_length_error": "Kata sandi minimal 8 karakter",
   "change_language": "Pilih Bahasa",
@@ -15,5 +16,6 @@
   "sign_out": "Keluar",
   "description": "Deskripsi",
   "error_message": "Terjadi kesalahan...",
-  "field_warning_message": "Isi semua field"
+  "field_warning_message": "Isi semua field",
+  "post": "Kirim"
 }

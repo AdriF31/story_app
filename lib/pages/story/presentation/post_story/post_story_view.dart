@@ -1,36 +1,35 @@
+import 'dart:async';
+
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:story_app/common.dart';
-import 'package:story_app/pages/story/presentation/cubit/story_cubit.dart';
+import 'package:story_app/pages/story/presentation/cubit/position_cubit/position_cubit.dart';
+import 'package:story_app/pages/story/presentation/cubit/story_cubit/story_cubit.dart';
 import 'package:story_app/utils/app_decoration.dart';
 import 'package:story_app/utils/elevated_button_widget.dart';
+import 'package:story_app/utils/google_maps_widget.dart';
 import 'package:story_app/utils/theme/color.dart';
 import 'package:story_app/utils/theme/text_style.dart';
 
-class PostStoryView extends StatefulWidget {
+class PostStoryView extends StatelessWidget {
   const PostStoryView({super.key, this.callback});
+
   final VoidCallback? callback;
 
   @override
-  State<PostStoryView> createState() => _PostStoryViewState();
-}
-
-class _PostStoryViewState extends State<PostStoryView> {
-  TextEditingController controller = TextEditingController();
-
-  GlobalKey<FormState> form = GlobalKey<FormState>();
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    TextEditingController controller = TextEditingController();
+
+    GlobalKey<FormState> form = GlobalKey<FormState>();
+
+    bool? isLoading = false;
+
+    Completer<GoogleMapController> googleMapController = Completer();
     return Scaffold(
       appBar: AppBar(
         title: Text("Post Story"),
@@ -43,34 +42,39 @@ class _PostStoryViewState extends State<PostStoryView> {
               onPressed: () {
                 if (form.currentState!.validate() &&
                     context.read<StoryCubit>().photo != null) {
-                  context
-                      .read<StoryCubit>()
-                      .postStory(description: controller.text);
+                  context.read<StoryCubit>().postStory(
+                      description: controller.text,
+                      lat: context.read<PositionCubit>().coordinate?.latitude,
+                      lon: context.read<PositionCubit>().coordinate?.longitude);
                 } else {
                   Fluttertoast.showToast(
                       msg: AppLocalizations.of(context)!.field_warning_message);
                 }
               },
-              buttonText: "post",
-              isLoading: state is OnLoadingPostStory,
+              buttonText: AppLocalizations.of(context)!.post,
+              isLoading: isLoading,
             );
           },
         ),
       ),
       body: BlocConsumer<StoryCubit, StoryState>(
         listener: (_, state) {
-          if (state is OnSuccessPostStory) {
-            Fluttertoast.showToast(msg: state.message ?? "");
-            if (widget.callback != null) {
-              widget.callback!();
-            }
-            context.pop();
-          }
-          if (state is OnErrorPostStory) {
-            Fluttertoast.showToast(msg: state.message ?? "");
-          }
+          isLoading = state.maybeWhen(
+              loadingPostStory: () => true, orElse: () => false);
+          state.maybeWhen(
+              successPostStory: (message) {
+                Fluttertoast.showToast(msg: message ?? "");
+                if (callback != null) {
+                  callback!();
+                }
+                context.pop();
+              },
+              errorPostStory: (message) {
+                Fluttertoast.showToast(msg: message ?? "");
+              },
+              orElse: () {});
         },
-        builder: (context, state) {
+        builder: (_, state) {
           return Form(
             key: form,
             child: SingleChildScrollView(
@@ -135,6 +139,46 @@ class _PostStoryViewState extends State<PostStoryView> {
                         ),
                       ],
                     ),
+                    SizedBox(
+                      height: 24,
+                    ),
+                    BlocBuilder<PositionCubit, PositionState>(
+                      builder: (_, state) {
+                        return state.maybeWhen(success: (pos) {
+                          return Column(
+                            children: [
+                              Text(
+                                  "${context.read<PositionCubit>().coordinate?.latitude}"),
+                              Text(
+                                  "${context.read<PositionCubit>().coordinate?.longitude}"),
+                              Text("${pos?.longitude}"),
+                              Container(
+                                height: 300,
+                                child: GoogleMapWidget(
+                                    gMapsController: googleMapController,
+                                    lat: pos?.latitude,
+                                    lon: pos?.longitude,
+                                    markers: {
+                                      Marker(
+                                          draggable: true,
+                                          markerId: MarkerId("id"),
+                                          position: LatLng(pos?.latitude ?? 0,
+                                              pos?.longitude ?? 0),
+                                          onDragEnd: ((newPosition) {
+                                            context
+                                                .read<PositionCubit>()
+                                                .changePosition(
+                                                    coordinates: newPosition);
+                                          }))
+                                    }),
+                              ),
+                            ],
+                          );
+                        }, orElse: () {
+                          return SizedBox.shrink();
+                        });
+                      },
+                    )
                   ],
                 ),
               ),

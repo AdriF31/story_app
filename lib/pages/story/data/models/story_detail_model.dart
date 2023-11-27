@@ -2,16 +2,12 @@
 //
 //     final storyDetailModel = storyDetailModelFromJson(jsonString);
 
-import 'dart:convert';
-
+import 'package:json_annotation/json_annotation.dart';
 import 'package:story_app/pages/story/domain/entities/story_detail_entity.dart';
 
-StoryDetailModel storyDetailModelFromJson(String str) =>
-    StoryDetailModel.fromJson(json.decode(str));
+part 'story_detail_model.g.dart';
 
-String storyDetailModelToJson(StoryDetailModel data) =>
-    json.encode(data.toJson());
-
+@JsonSerializable()
 class StoryDetailModel extends StoryDetailEntity {
   final bool? error;
   final String? message;
@@ -24,19 +20,12 @@ class StoryDetailModel extends StoryDetailEntity {
   }) : super(error: error, message: message, story: story);
 
   factory StoryDetailModel.fromJson(Map<String, dynamic> json) =>
-      StoryDetailModel(
-        error: json["error"],
-        message: json["message"],
-        story: json["story"] == null ? null : Story.fromJson(json["story"]),
-      );
+      _$StoryDetailModelFromJson(json);
 
-  Map<String, dynamic> toJson() => {
-        "error": error,
-        "message": message,
-        "story": story?.toJson(),
-      };
+  Map<String, dynamic> toJson() => _$StoryDetailModelToJson(this);
 }
 
+@JsonSerializable()
 class Story extends StoryDetEntity {
   final String? id;
   final String? name;
@@ -63,25 +52,7 @@ class Story extends StoryDetEntity {
             lat: lat,
             lon: lon);
 
-  factory Story.fromJson(Map<String, dynamic> json) => Story(
-        id: json["id"],
-        name: json["name"],
-        description: json["description"],
-        photoUrl: json["photoUrl"],
-        createdAt: json["createdAt"] == null
-            ? null
-            : DateTime.parse(json["createdAt"]),
-        lat: json["lat"]?.toDouble(),
-        lon: json["lon"]?.toDouble(),
-      );
+  factory Story.fromJson(Map<String, dynamic> json) => _$StoryFromJson(json);
 
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "name": name,
-        "description": description,
-        "photoUrl": photoUrl,
-        "createdAt": createdAt?.toIso8601String(),
-        "lat": lat,
-        "lon": lon,
-      };
+  Map<String, dynamic> toJson() => _$StoryToJson(this);
 }

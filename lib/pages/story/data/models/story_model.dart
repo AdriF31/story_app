@@ -1,17 +1,9 @@
-// To parse this JSON data, do
-//
-//     final storyModel = storyModelFromJson(jsonString);
-
-
-import 'dart:convert';
-
+import 'package:json_annotation/json_annotation.dart';
 import 'package:story_app/pages/story/domain/entities/story_entity.dart';
 
-StoryModel storyModelFromJson(String str) =>
-    StoryModel.fromJson(json.decode(str));
+part 'story_model.g.dart';
 
-String storyModelToJson(StoryModel data) => json.encode(data.toJson());
-
+@JsonSerializable()
 class StoryModel extends StoryEntity {
   final bool? error;
   final String? message;
@@ -23,24 +15,13 @@ class StoryModel extends StoryEntity {
     this.listStory,
   }) : super(error: error, message: message, listStory: listStory);
 
-  factory StoryModel.fromJson(Map<String, dynamic> json) => StoryModel(
-        error: json["error"],
-        message: json["message"],
-        listStory: json["listStory"] == null
-            ? []
-            : List<ListStory>.from(
-                json["listStory"]!.map((x) => ListStory.fromJson(x))),
-      );
+  factory StoryModel.fromJson(Map<String, dynamic> json) =>
+      _$StoryModelFromJson(json);
 
-  Map<String, dynamic> toJson() => {
-        "error": error,
-        "message": message,
-        "listStory": listStory == null
-            ? []
-            : List<dynamic>.from(listStory!.map((x) => x.toJson())),
-      };
+  Map<String, dynamic> toJson() => _$StoryModelToJson(this);
 }
 
+@JsonSerializable()
 class ListStory extends ListStoryEntity {
   final String? id;
   final String? name;
@@ -67,25 +48,7 @@ class ListStory extends ListStoryEntity {
             lat: lat,
             lon: lon);
 
-  factory ListStory.fromJson(Map<String, dynamic> json) => ListStory(
-        id: json["id"],
-        name: json["name"],
-        description: json["description"],
-        photoUrl: json["photoUrl"],
-        createdAt: json["createdAt"] == null
-            ? null
-            : DateTime.parse(json["createdAt"]),
-        lat: json["lat"]?.toDouble(),
-        lon: json["lon"]?.toDouble(),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "name": name,
-        "description": description,
-        "photoUrl": photoUrl,
-        "createdAt": createdAt?.toIso8601String(),
-        "lat": lat,
-        "lon": lon,
-      };
+  factory ListStory.fromJson(Map<String, dynamic> json) =>
+      _$ListStoryFromJson(json);
+  Map<String, dynamic> toJson() => _$ListStoryToJson(this);
 }

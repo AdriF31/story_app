@@ -20,6 +20,7 @@ class RegisterView extends StatelessWidget {
     TextEditingController emailController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
     bool? isObscured = true;
+    bool? isLoading = false;
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.register),
@@ -28,16 +29,20 @@ class RegisterView extends StatelessWidget {
       body: Center(
         child: BlocConsumer<AuthBloc, AuthState>(
           listener: (_, state) {
-            if (state is AuthRegisterSuccess) {
-              Fluttertoast.showToast(msg: state.message ?? "");
-              context.go(loginRoute);
-            }
-            if (state is AuthRegisterError) {
-              Fluttertoast.showToast(msg: state.message ?? "");
-            }
-            if (state is Obscured) {
-              isObscured = state.isObscured;
-            }
+            state.maybeWhen(
+                registerSuccess: (message) {
+                  Fluttertoast.showToast(msg: message ?? "");
+                  context.go(loginRoute);
+                },
+                registerError: (message) {
+                  Fluttertoast.showToast(msg: message ?? "");
+                },
+                obscured: (obscured) {
+                  isObscured = obscured;
+                },
+                orElse: () {});
+            isLoading = state.maybeWhen(
+                registerLoading: () => true, orElse: () => false);
           },
           builder: (_, state) {
             return SingleChildScrollView(
@@ -110,6 +115,12 @@ class RegisterView extends StatelessWidget {
                                   return AppLocalizations.of(context)!
                                       .email_empty_error;
                                 }
+                                if (RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                        .hasMatch(emailController.text) ==
+                                    false) {
+                                  return AppLocalizations.of(context)!
+                                      .email_not_valid;
+                                }
                                 return null;
                               },
                             ),
@@ -179,7 +190,7 @@ class RegisterView extends StatelessWidget {
                           }
                         },
                         buttonText: AppLocalizations.of(context)!.register,
-                        isLoading: state is AuthRegisterLoading,
+                        isLoading: isLoading,
                       ),
                       const SizedBox(
                         height: 24,

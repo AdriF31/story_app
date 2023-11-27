@@ -4,6 +4,7 @@
   "register": "Register",
   "name_error": "Name can't be empty",
   "email_empty_error": "Email can't be empty",
+  "email_not_valid": "Input a valid email",
   "password_empty_error": "can't be empty",
   "password_length_error": "Password minimum 8 character",
   "change_language": "Choose language",
@@ -15,5 +16,6 @@
   "sign_out": "Sign Out",
   "description": "Description",
   "error_message": "Something went wrong...",
-  "field_warning_message": "Fill in all fields"
+  "field_warning_message": "Fill in all fields",
+  "post": "Post"
 }

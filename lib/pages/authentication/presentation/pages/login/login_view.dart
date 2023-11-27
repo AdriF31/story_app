@@ -21,7 +21,8 @@ class LoginView extends StatelessWidget {
 
     TextEditingController passwordController = TextEditingController();
 
-    bool? isObscured = true;
+    bool? obscured = true;
+    bool? isLoading = false;
 
     return Scaffold(
       appBar: AppBar(
@@ -30,16 +31,31 @@ class LoginView extends StatelessWidget {
       ),
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (_, state) {
-          if (state is AuthLoginSuccess) {
-            Fluttertoast.showToast(msg: state.data?.message ?? "");
-            context.go(listStoryRoute);
-          }
-          if (state is AuthLoginError) {
-            Fluttertoast.showToast(msg: state.message ?? "");
-          }
-          if (state is Obscured) {
-            isObscured = state.isObscured;
-          }
+          state.maybeWhen(
+              loginSuccess: (data) {
+                Fluttertoast.showToast(msg: data?.message ?? "");
+                context.go(listStoryRoute);
+              },
+              loginError: (message) {
+                Fluttertoast.showToast(msg: message ?? "");
+              },
+              obscured: (isObscured) {
+                obscured = isObscured;
+              },
+              orElse: () {});
+
+          isLoading =
+              state.maybeWhen(loginLoading: () => true, orElse: () => false);
+          // if (state is AuthState.loginSuccess()) {
+          //   Fluttertoast.showToast(msg: state.data?.message ?? "");
+          //   context.go(listStoryRoute);
+          // }
+          // if (state is AuthLoginError) {
+          //   Fluttertoast.showToast(msg: state.message ?? "");
+          // }
+          // if (state is Obscured) {
+          //   isObscured = state.isObscured;
+          // }
         },
         builder: (_, state) {
           return Center(
@@ -77,6 +93,12 @@ class LoginView extends StatelessWidget {
                                   return AppLocalizations.of(context)!
                                       .email_empty_error;
                                 }
+                                if (RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                        .hasMatch(emailController.text) ==
+                                    false) {
+                                  return AppLocalizations.of(context)!
+                                      .email_not_valid;
+                                }
                                 return null;
                               },
                             ),
@@ -99,7 +121,7 @@ class LoginView extends StatelessWidget {
                           ),
                           TextFormField(
                             controller: passwordController,
-                            obscureText: isObscured!,
+                            obscureText: obscured!,
                             decoration: customInputDecoration(
                                 hintText: "Password",
                                 prefixIcon: const Icon(
@@ -108,7 +130,7 @@ class LoginView extends StatelessWidget {
                                 ),
                                 suffixIcon: IconButton(
                                     onPressed: () {
-                                      if (isObscured!) {
+                                      if (obscured!) {
                                         context.read<AuthBloc>().add(
                                             ObscurePassword(isObscure: false));
                                       } else {
@@ -116,7 +138,7 @@ class LoginView extends StatelessWidget {
                                             ObscurePassword(isObscure: true));
                                       }
                                     },
-                                    icon: Icon(isObscured!
+                                    icon: Icon(obscured!
                                         ? FluentIcons.eye_24_regular
                                         : FluentIcons.eye_off_24_regular))),
                             validator: (value) {
@@ -145,7 +167,7 @@ class LoginView extends StatelessWidget {
                           }
                         },
                         buttonText: AppLocalizations.of(context)!.login,
-                        isLoading: state is AuthLoginLoading,
+                        isLoading: isLoading,
                       ),
                       const SizedBox(
                         height: 24,

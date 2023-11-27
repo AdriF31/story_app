@@ -26,7 +26,7 @@ class _SplashScreenState extends State<SplashScreen> {
       if (await SecureStorage.getToken() != null &&
           (await SecureStorage.getToken()).isNotEmpty) {
         print("token not null");
-        context.go(listStoryRoute);
+        context.go(bottomNavigationRoute);
       } else {
         print("token null");
         context.go(loginRoute);
