@@ -5,16 +5,16 @@ class StoryState with _$StoryState {
   const factory StoryState.initial() = _Initial;
   const factory StoryState.loadingGetStory({bool? isFirstFetch}) =
       _LoadingGetStory;
-  const factory StoryState.successGetStory({StoryEntity? data}) =
-      _SuccessGetStory;
+  const factory StoryState.successGetStory(
+      {StoryEntity? data, List<Placemark>? placemark}) = _SuccessGetStory;
   const factory StoryState.errorGetStory({String? message}) = _ErrorGetStory;
   const factory StoryState.loadingPostStory() = _LoadingPostStory;
   const factory StoryState.successPostStory({String? message}) =
       _SuccessPostStory;
   const factory StoryState.errorPostStory({String? message}) = _ErrorPostStory;
   const factory StoryState.loadingGetDetailStory() = _LoadingGetDetailStory;
-  const factory StoryState.successGetDetailStory({StoryDetailEntity? data}) =
-      _SuccessGetDetailStory;
+  const factory StoryState.successGetDetailStory(
+      {StoryDetailEntity? data, Placemark? placemark}) = _SuccessGetDetailStory;
   const factory StoryState.errorGetDetailStory({String? message}) =
       _ErrorGetDetailStory;
   const factory StoryState.getImage({File? file}) = _GetImage;

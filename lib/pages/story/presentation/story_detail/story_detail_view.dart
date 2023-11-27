@@ -19,13 +19,48 @@ class StoryDetailView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Completer<GoogleMapController> googleMapController = Completer();
+    void openMaps(
+        {required double? lat,
+        required double? lon,
+        required String? id,
+        required String? title}) {
+      showDialog(
+          context: context,
+          builder: (_) {
+            return Dialog(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: Container(
+                    height: MediaQuery.of(context).size.height * 0.3,
+                    decoration:
+                        BoxDecoration(borderRadius: BorderRadius.circular(16)),
+                    child: GoogleMapWidget(
+                      gMapsController: googleMapController,
+                      lat: lat,
+                      lon: lon,
+                      markers: {
+                        Marker(
+                            markerId: MarkerId(id ?? ""),
+                            position: LatLng(lat ?? 0, lon ?? 0),
+                            infoWindow: InfoWindow(title: title ?? ""))
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            );
+          });
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Story Detail"),
       ),
       body: BlocBuilder<StoryCubit, StoryState>(
         builder: (context, state) {
-          return state.maybeWhen(successGetDetailStory: (data) {
+          return state.maybeWhen(successGetDetailStory: (data, placemark) {
             return SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.only(top: 16.0),
@@ -51,6 +86,19 @@ class StoryDetailView extends StatelessWidget {
                             data?.story?.name ?? "",
                             style: text18WhiteMedium,
                           ),
+                          if (data?.story?.lat != null &&
+                              data?.story?.lon != null) ...[
+                            Spacer(),
+                            IconButton(
+                                onPressed: () {
+                                  openMaps(
+                                      lat: data?.story?.lat,
+                                      lon: data?.story?.lon,
+                                      id: data?.story?.id,
+                                      title: placemark?.locality);
+                                },
+                                icon: Icon(FluentIcons.location_24_regular)),
+                          ]
                         ],
                       ),
                     ),
@@ -59,7 +107,6 @@ class StoryDetailView extends StatelessWidget {
                     ),
                     CachedNetworkImage(
                       imageUrl: data?.story?.photoUrl ?? "https://",
-                      height: MediaQuery.of(context).size.height * 0.6,
                       width: MediaQuery.of(context).size.width,
                       fit: BoxFit.fitWidth,
                       placeholder: (context, url) {
@@ -79,31 +126,6 @@ class StoryDetailView extends StatelessWidget {
                     const SizedBox(
                       height: 24,
                     ),
-                    if (data?.story?.lat != null && data?.story?.lon != null)
-                      Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(16),
-                          child: Container(
-                            height: MediaQuery.of(context).size.height * 0.3,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(16)),
-                            child: GoogleMapWidget(
-                              gMapsController: googleMapController,
-                              lat: data?.story?.lat,
-                              lon: data?.story?.lon,
-                              markers: {
-                                Marker(
-                                    markerId: MarkerId(data?.story?.id ?? ""),
-                                    position: LatLng(data?.story?.lat ?? 0,
-                                        data?.story?.lon ?? 0),
-                                    infoWindow: InfoWindow(
-                                        title: data?.story?.description ?? ""))
-                              },
-                            ),
-                          ),
-                        ),
-                      ),
                   ],
                 ),
               ),

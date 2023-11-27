@@ -25,10 +25,8 @@ class _SplashScreenState extends State<SplashScreen> {
     Future.delayed(const Duration(seconds: 2), () async {
       if (await SecureStorage.getToken() != null &&
           (await SecureStorage.getToken()).isNotEmpty) {
-        print("token not null");
         context.go(bottomNavigationRoute);
       } else {
-        print("token null");
         context.go(loginRoute);
       }
     });

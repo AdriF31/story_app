@@ -125,7 +125,7 @@ class ListStoryView extends StatelessWidget {
               color: primaryColor,
               size: 40,
             ));
-          }, successGetStory: (data) {
+          }, successGetStory: (data, _) {
             return SmartRefresher(
               controller: refreshController,
               onRefresh: onRefresh,
@@ -192,7 +192,7 @@ class ListStoryView extends StatelessWidget {
                                       .listStory?[index]
                                       .photoUrl ??
                                   "https://",
-                              height: MediaQuery.of(context).size.height * 0.7,
+                              // height: MediaQuery.of(context).size.height * 0.7,
                               width: MediaQuery.of(context).size.width,
                               fit: BoxFit.fitWidth,
                               placeholder: (context, _) {

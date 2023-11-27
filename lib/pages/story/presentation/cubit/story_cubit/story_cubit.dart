@@ -40,7 +40,14 @@ class StoryCubit extends Cubit<StoryState> {
             listStory = r.listStory;
           }
           page++;
-          emit(StoryState.successGetStory(data: r));
+          if (location == 1) {
+            r.listStory?.forEach((element) async {
+              List<Placemark> placemark = await placemarkFromCoordinates(
+                  element.lat ?? 0, element.lon ?? 0);
+              placemarks?.add(placemark.first);
+            });
+          }
+          emit(StoryState.successGetStory(data: r, placemark: placemarks));
         });
       } else {
         emit(StoryState.errorGetStory(message: "Check your connection"));
@@ -54,16 +61,22 @@ class StoryCubit extends Cubit<StoryState> {
     emit(StoryState.loadingGetDetailStory());
     try {
       var res = await storyUseCase.getDetailStory(id);
-      res.fold((l) => emit(StoryState.errorGetDetailStory()),
-          (r) => emit(StoryState.successGetDetailStory(data: r)));
+      res.fold((l) => emit(StoryState.errorGetDetailStory()), (r) async {
+        if (r.story?.lat != null && r.story?.lon != null) {
+          placemarks = await placemarkFromCoordinates(
+              r.story?.lat ?? 0, r.story?.lon ?? 0);
+        }
+        emit(StoryState.successGetDetailStory(
+            data: r, placemark: placemarks?.first));
+      });
     } catch (e) {
-      emit(StoryState.errorGetDetailStory());
+      emit(const StoryState.errorGetDetailStory());
     }
   }
 
   void postStory(
       {File? file, String? description, double? lat, double? lon}) async {
-    emit(StoryState.loadingPostStory());
+    emit(const StoryState.loadingPostStory());
     try {
       var res = await storyUseCase.postStory(
           file: photo, description: description, lat: lat, lon: lon);

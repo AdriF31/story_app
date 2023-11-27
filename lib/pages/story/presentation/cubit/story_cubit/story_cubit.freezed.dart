@@ -20,13 +20,15 @@ mixin _$StoryState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function(bool? isFirstFetch) loadingGetStory,
-    required TResult Function(StoryEntity? data) successGetStory,
+    required TResult Function(StoryEntity? data, List<Placemark>? placemark)
+        successGetStory,
     required TResult Function(String? message) errorGetStory,
     required TResult Function() loadingPostStory,
     required TResult Function(String? message) successPostStory,
     required TResult Function(String? message) errorPostStory,
     required TResult Function() loadingGetDetailStory,
-    required TResult Function(StoryDetailEntity? data) successGetDetailStory,
+    required TResult Function(StoryDetailEntity? data, Placemark? placemark)
+        successGetDetailStory,
     required TResult Function(String? message) errorGetDetailStory,
     required TResult Function(File? file) getImage,
   }) =>
@@ -35,13 +37,15 @@ mixin _$StoryState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function(bool? isFirstFetch)? loadingGetStory,
-    TResult? Function(StoryEntity? data)? successGetStory,
+    TResult? Function(StoryEntity? data, List<Placemark>? placemark)?
+        successGetStory,
     TResult? Function(String? message)? errorGetStory,
     TResult? Function()? loadingPostStory,
     TResult? Function(String? message)? successPostStory,
     TResult? Function(String? message)? errorPostStory,
     TResult? Function()? loadingGetDetailStory,
-    TResult? Function(StoryDetailEntity? data)? successGetDetailStory,
+    TResult? Function(StoryDetailEntity? data, Placemark? placemark)?
+        successGetDetailStory,
     TResult? Function(String? message)? errorGetDetailStory,
     TResult? Function(File? file)? getImage,
   }) =>
@@ -50,13 +54,15 @@ mixin _$StoryState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function(bool? isFirstFetch)? loadingGetStory,
-    TResult Function(StoryEntity? data)? successGetStory,
+    TResult Function(StoryEntity? data, List<Placemark>? placemark)?
+        successGetStory,
     TResult Function(String? message)? errorGetStory,
     TResult Function()? loadingPostStory,
     TResult Function(String? message)? successPostStory,
     TResult Function(String? message)? errorPostStory,
     TResult Function()? loadingGetDetailStory,
-    TResult Function(StoryDetailEntity? data)? successGetDetailStory,
+    TResult Function(StoryDetailEntity? data, Placemark? placemark)?
+        successGetDetailStory,
     TResult Function(String? message)? errorGetDetailStory,
     TResult Function(File? file)? getImage,
     required TResult orElse(),
@@ -170,13 +176,15 @@ class _$InitialImpl implements _Initial {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function(bool? isFirstFetch) loadingGetStory,
-    required TResult Function(StoryEntity? data) successGetStory,
+    required TResult Function(StoryEntity? data, List<Placemark>? placemark)
+        successGetStory,
     required TResult Function(String? message) errorGetStory,
     required TResult Function() loadingPostStory,
     required TResult Function(String? message) successPostStory,
     required TResult Function(String? message) errorPostStory,
     required TResult Function() loadingGetDetailStory,
-    required TResult Function(StoryDetailEntity? data) successGetDetailStory,
+    required TResult Function(StoryDetailEntity? data, Placemark? placemark)
+        successGetDetailStory,
     required TResult Function(String? message) errorGetDetailStory,
     required TResult Function(File? file) getImage,
   }) {
@@ -188,13 +196,15 @@ class _$InitialImpl implements _Initial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function(bool? isFirstFetch)? loadingGetStory,
-    TResult? Function(StoryEntity? data)? successGetStory,
+    TResult? Function(StoryEntity? data, List<Placemark>? placemark)?
+        successGetStory,
     TResult? Function(String? message)? errorGetStory,
     TResult? Function()? loadingPostStory,
     TResult? Function(String? message)? successPostStory,
     TResult? Function(String? message)? errorPostStory,
     TResult? Function()? loadingGetDetailStory,
-    TResult? Function(StoryDetailEntity? data)? successGetDetailStory,
+    TResult? Function(StoryDetailEntity? data, Placemark? placemark)?
+        successGetDetailStory,
     TResult? Function(String? message)? errorGetDetailStory,
     TResult? Function(File? file)? getImage,
   }) {
@@ -206,13 +216,15 @@ class _$InitialImpl implements _Initial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function(bool? isFirstFetch)? loadingGetStory,
-    TResult Function(StoryEntity? data)? successGetStory,
+    TResult Function(StoryEntity? data, List<Placemark>? placemark)?
+        successGetStory,
     TResult Function(String? message)? errorGetStory,
     TResult Function()? loadingPostStory,
     TResult Function(String? message)? successPostStory,
     TResult Function(String? message)? errorPostStory,
     TResult Function()? loadingGetDetailStory,
-    TResult Function(StoryDetailEntity? data)? successGetDetailStory,
+    TResult Function(StoryDetailEntity? data, Placemark? placemark)?
+        successGetDetailStory,
     TResult Function(String? message)? errorGetDetailStory,
     TResult Function(File? file)? getImage,
     required TResult orElse(),
@@ -356,13 +368,15 @@ class _$LoadingGetStoryImpl implements _LoadingGetStory {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function(bool? isFirstFetch) loadingGetStory,
-    required TResult Function(StoryEntity? data) successGetStory,
+    required TResult Function(StoryEntity? data, List<Placemark>? placemark)
+        successGetStory,
     required TResult Function(String? message) errorGetStory,
     required TResult Function() loadingPostStory,
     required TResult Function(String? message) successPostStory,
     required TResult Function(String? message) errorPostStory,
     required TResult Function() loadingGetDetailStory,
-    required TResult Function(StoryDetailEntity? data) successGetDetailStory,
+    required TResult Function(StoryDetailEntity? data, Placemark? placemark)
+        successGetDetailStory,
     required TResult Function(String? message) errorGetDetailStory,
     required TResult Function(File? file) getImage,
   }) {
@@ -374,13 +388,15 @@ class _$LoadingGetStoryImpl implements _LoadingGetStory {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function(bool? isFirstFetch)? loadingGetStory,
-    TResult? Function(StoryEntity? data)? successGetStory,
+    TResult? Function(StoryEntity? data, List<Placemark>? placemark)?
+        successGetStory,
     TResult? Function(String? message)? errorGetStory,
     TResult? Function()? loadingPostStory,
     TResult? Function(String? message)? successPostStory,
     TResult? Function(String? message)? errorPostStory,
     TResult? Function()? loadingGetDetailStory,
-    TResult? Function(StoryDetailEntity? data)? successGetDetailStory,
+    TResult? Function(StoryDetailEntity? data, Placemark? placemark)?
+        successGetDetailStory,
     TResult? Function(String? message)? errorGetDetailStory,
     TResult? Function(File? file)? getImage,
   }) {
@@ -392,13 +408,15 @@ class _$LoadingGetStoryImpl implements _LoadingGetStory {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function(bool? isFirstFetch)? loadingGetStory,
-    TResult Function(StoryEntity? data)? successGetStory,
+    TResult Function(StoryEntity? data, List<Placemark>? placemark)?
+        successGetStory,
     TResult Function(String? message)? errorGetStory,
     TResult Function()? loadingPostStory,
     TResult Function(String? message)? successPostStory,
     TResult Function(String? message)? errorPostStory,
     TResult Function()? loadingGetDetailStory,
-    TResult Function(StoryDetailEntity? data)? successGetDetailStory,
+    TResult Function(StoryDetailEntity? data, Placemark? placemark)?
+        successGetDetailStory,
     TResult Function(String? message)? errorGetDetailStory,
     TResult Function(File? file)? getImage,
     required TResult orElse(),
@@ -486,7 +504,7 @@ abstract class _$$SuccessGetStoryImplCopyWith<$Res> {
           $Res Function(_$SuccessGetStoryImpl) then) =
       __$$SuccessGetStoryImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({StoryEntity? data});
+  $Res call({StoryEntity? data, List<Placemark>? placemark});
 }
 
 /// @nodoc
@@ -501,12 +519,17 @@ class __$$SuccessGetStoryImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? data = freezed,
+    Object? placemark = freezed,
   }) {
     return _then(_$SuccessGetStoryImpl(
       data: freezed == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
               as StoryEntity?,
+      placemark: freezed == placemark
+          ? _value._placemark
+          : placemark // ignore: cast_nullable_to_non_nullable
+              as List<Placemark>?,
     ));
   }
 }
@@ -514,14 +537,24 @@ class __$$SuccessGetStoryImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$SuccessGetStoryImpl implements _SuccessGetStory {
-  const _$SuccessGetStoryImpl({this.data});
+  const _$SuccessGetStoryImpl({this.data, final List<Placemark>? placemark})
+      : _placemark = placemark;
 
   @override
   final StoryEntity? data;
+  final List<Placemark>? _placemark;
+  @override
+  List<Placemark>? get placemark {
+    final value = _placemark;
+    if (value == null) return null;
+    if (_placemark is EqualUnmodifiableListView) return _placemark;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
 
   @override
   String toString() {
-    return 'StoryState.successGetStory(data: $data)';
+    return 'StoryState.successGetStory(data: $data, placemark: $placemark)';
   }
 
   @override
@@ -529,11 +562,14 @@ class _$SuccessGetStoryImpl implements _SuccessGetStory {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$SuccessGetStoryImpl &&
-            (identical(other.data, data) || other.data == data));
+            (identical(other.data, data) || other.data == data) &&
+            const DeepCollectionEquality()
+                .equals(other._placemark, _placemark));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, data);
+  int get hashCode => Object.hash(
+      runtimeType, data, const DeepCollectionEquality().hash(_placemark));
 
   @JsonKey(ignore: true)
   @override
@@ -547,17 +583,19 @@ class _$SuccessGetStoryImpl implements _SuccessGetStory {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function(bool? isFirstFetch) loadingGetStory,
-    required TResult Function(StoryEntity? data) successGetStory,
+    required TResult Function(StoryEntity? data, List<Placemark>? placemark)
+        successGetStory,
     required TResult Function(String? message) errorGetStory,
     required TResult Function() loadingPostStory,
     required TResult Function(String? message) successPostStory,
     required TResult Function(String? message) errorPostStory,
     required TResult Function() loadingGetDetailStory,
-    required TResult Function(StoryDetailEntity? data) successGetDetailStory,
+    required TResult Function(StoryDetailEntity? data, Placemark? placemark)
+        successGetDetailStory,
     required TResult Function(String? message) errorGetDetailStory,
     required TResult Function(File? file) getImage,
   }) {
-    return successGetStory(data);
+    return successGetStory(data, placemark);
   }
 
   @override
@@ -565,17 +603,19 @@ class _$SuccessGetStoryImpl implements _SuccessGetStory {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function(bool? isFirstFetch)? loadingGetStory,
-    TResult? Function(StoryEntity? data)? successGetStory,
+    TResult? Function(StoryEntity? data, List<Placemark>? placemark)?
+        successGetStory,
     TResult? Function(String? message)? errorGetStory,
     TResult? Function()? loadingPostStory,
     TResult? Function(String? message)? successPostStory,
     TResult? Function(String? message)? errorPostStory,
     TResult? Function()? loadingGetDetailStory,
-    TResult? Function(StoryDetailEntity? data)? successGetDetailStory,
+    TResult? Function(StoryDetailEntity? data, Placemark? placemark)?
+        successGetDetailStory,
     TResult? Function(String? message)? errorGetDetailStory,
     TResult? Function(File? file)? getImage,
   }) {
-    return successGetStory?.call(data);
+    return successGetStory?.call(data, placemark);
   }
 
   @override
@@ -583,19 +623,21 @@ class _$SuccessGetStoryImpl implements _SuccessGetStory {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function(bool? isFirstFetch)? loadingGetStory,
-    TResult Function(StoryEntity? data)? successGetStory,
+    TResult Function(StoryEntity? data, List<Placemark>? placemark)?
+        successGetStory,
     TResult Function(String? message)? errorGetStory,
     TResult Function()? loadingPostStory,
     TResult Function(String? message)? successPostStory,
     TResult Function(String? message)? errorPostStory,
     TResult Function()? loadingGetDetailStory,
-    TResult Function(StoryDetailEntity? data)? successGetDetailStory,
+    TResult Function(StoryDetailEntity? data, Placemark? placemark)?
+        successGetDetailStory,
     TResult Function(String? message)? errorGetDetailStory,
     TResult Function(File? file)? getImage,
     required TResult orElse(),
   }) {
     if (successGetStory != null) {
-      return successGetStory(data);
+      return successGetStory(data, placemark);
     }
     return orElse();
   }
@@ -662,10 +704,12 @@ class _$SuccessGetStoryImpl implements _SuccessGetStory {
 }
 
 abstract class _SuccessGetStory implements StoryState {
-  const factory _SuccessGetStory({final StoryEntity? data}) =
-      _$SuccessGetStoryImpl;
+  const factory _SuccessGetStory(
+      {final StoryEntity? data,
+      final List<Placemark>? placemark}) = _$SuccessGetStoryImpl;
 
   StoryEntity? get data;
+  List<Placemark>? get placemark;
   @JsonKey(ignore: true)
   _$$SuccessGetStoryImplCopyWith<_$SuccessGetStoryImpl> get copyWith =>
       throw _privateConstructorUsedError;
@@ -737,13 +781,15 @@ class _$ErrorGetStoryImpl implements _ErrorGetStory {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function(bool? isFirstFetch) loadingGetStory,
-    required TResult Function(StoryEntity? data) successGetStory,
+    required TResult Function(StoryEntity? data, List<Placemark>? placemark)
+        successGetStory,
     required TResult Function(String? message) errorGetStory,
     required TResult Function() loadingPostStory,
     required TResult Function(String? message) successPostStory,
     required TResult Function(String? message) errorPostStory,
     required TResult Function() loadingGetDetailStory,
-    required TResult Function(StoryDetailEntity? data) successGetDetailStory,
+    required TResult Function(StoryDetailEntity? data, Placemark? placemark)
+        successGetDetailStory,
     required TResult Function(String? message) errorGetDetailStory,
     required TResult Function(File? file) getImage,
   }) {
@@ -755,13 +801,15 @@ class _$ErrorGetStoryImpl implements _ErrorGetStory {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function(bool? isFirstFetch)? loadingGetStory,
-    TResult? Function(StoryEntity? data)? successGetStory,
+    TResult? Function(StoryEntity? data, List<Placemark>? placemark)?
+        successGetStory,
     TResult? Function(String? message)? errorGetStory,
     TResult? Function()? loadingPostStory,
     TResult? Function(String? message)? successPostStory,
     TResult? Function(String? message)? errorPostStory,
     TResult? Function()? loadingGetDetailStory,
-    TResult? Function(StoryDetailEntity? data)? successGetDetailStory,
+    TResult? Function(StoryDetailEntity? data, Placemark? placemark)?
+        successGetDetailStory,
     TResult? Function(String? message)? errorGetDetailStory,
     TResult? Function(File? file)? getImage,
   }) {
@@ -773,13 +821,15 @@ class _$ErrorGetStoryImpl implements _ErrorGetStory {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function(bool? isFirstFetch)? loadingGetStory,
-    TResult Function(StoryEntity? data)? successGetStory,
+    TResult Function(StoryEntity? data, List<Placemark>? placemark)?
+        successGetStory,
     TResult Function(String? message)? errorGetStory,
     TResult Function()? loadingPostStory,
     TResult Function(String? message)? successPostStory,
     TResult Function(String? message)? errorPostStory,
     TResult Function()? loadingGetDetailStory,
-    TResult Function(StoryDetailEntity? data)? successGetDetailStory,
+    TResult Function(StoryDetailEntity? data, Placemark? placemark)?
+        successGetDetailStory,
     TResult Function(String? message)? errorGetDetailStory,
     TResult Function(File? file)? getImage,
     required TResult orElse(),
@@ -900,13 +950,15 @@ class _$LoadingPostStoryImpl implements _LoadingPostStory {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function(bool? isFirstFetch) loadingGetStory,
-    required TResult Function(StoryEntity? data) successGetStory,
+    required TResult Function(StoryEntity? data, List<Placemark>? placemark)
+        successGetStory,
     required TResult Function(String? message) errorGetStory,
     required TResult Function() loadingPostStory,
     required TResult Function(String? message) successPostStory,
     required TResult Function(String? message) errorPostStory,
     required TResult Function() loadingGetDetailStory,
-    required TResult Function(StoryDetailEntity? data) successGetDetailStory,
+    required TResult Function(StoryDetailEntity? data, Placemark? placemark)
+        successGetDetailStory,
     required TResult Function(String? message) errorGetDetailStory,
     required TResult Function(File? file) getImage,
   }) {
@@ -918,13 +970,15 @@ class _$LoadingPostStoryImpl implements _LoadingPostStory {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function(bool? isFirstFetch)? loadingGetStory,
-    TResult? Function(StoryEntity? data)? successGetStory,
+    TResult? Function(StoryEntity? data, List<Placemark>? placemark)?
+        successGetStory,
     TResult? Function(String? message)? errorGetStory,
     TResult? Function()? loadingPostStory,
     TResult? Function(String? message)? successPostStory,
     TResult? Function(String? message)? errorPostStory,
     TResult? Function()? loadingGetDetailStory,
-    TResult? Function(StoryDetailEntity? data)? successGetDetailStory,
+    TResult? Function(StoryDetailEntity? data, Placemark? placemark)?
+        successGetDetailStory,
     TResult? Function(String? message)? errorGetDetailStory,
     TResult? Function(File? file)? getImage,
   }) {
@@ -936,13 +990,15 @@ class _$LoadingPostStoryImpl implements _LoadingPostStory {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function(bool? isFirstFetch)? loadingGetStory,
-    TResult Function(StoryEntity? data)? successGetStory,
+    TResult Function(StoryEntity? data, List<Placemark>? placemark)?
+        successGetStory,
     TResult Function(String? message)? errorGetStory,
     TResult Function()? loadingPostStory,
     TResult Function(String? message)? successPostStory,
     TResult Function(String? message)? errorPostStory,
     TResult Function()? loadingGetDetailStory,
-    TResult Function(StoryDetailEntity? data)? successGetDetailStory,
+    TResult Function(StoryDetailEntity? data, Placemark? placemark)?
+        successGetDetailStory,
     TResult Function(String? message)? errorGetDetailStory,
     TResult Function(File? file)? getImage,
     required TResult orElse(),
@@ -1085,13 +1141,15 @@ class _$SuccessPostStoryImpl implements _SuccessPostStory {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function(bool? isFirstFetch) loadingGetStory,
-    required TResult Function(StoryEntity? data) successGetStory,
+    required TResult Function(StoryEntity? data, List<Placemark>? placemark)
+        successGetStory,
     required TResult Function(String? message) errorGetStory,
     required TResult Function() loadingPostStory,
     required TResult Function(String? message) successPostStory,
     required TResult Function(String? message) errorPostStory,
     required TResult Function() loadingGetDetailStory,
-    required TResult Function(StoryDetailEntity? data) successGetDetailStory,
+    required TResult Function(StoryDetailEntity? data, Placemark? placemark)
+        successGetDetailStory,
     required TResult Function(String? message) errorGetDetailStory,
     required TResult Function(File? file) getImage,
   }) {
@@ -1103,13 +1161,15 @@ class _$SuccessPostStoryImpl implements _SuccessPostStory {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function(bool? isFirstFetch)? loadingGetStory,
-    TResult? Function(StoryEntity? data)? successGetStory,
+    TResult? Function(StoryEntity? data, List<Placemark>? placemark)?
+        successGetStory,
     TResult? Function(String? message)? errorGetStory,
     TResult? Function()? loadingPostStory,
     TResult? Function(String? message)? successPostStory,
     TResult? Function(String? message)? errorPostStory,
     TResult? Function()? loadingGetDetailStory,
-    TResult? Function(StoryDetailEntity? data)? successGetDetailStory,
+    TResult? Function(StoryDetailEntity? data, Placemark? placemark)?
+        successGetDetailStory,
     TResult? Function(String? message)? errorGetDetailStory,
     TResult? Function(File? file)? getImage,
   }) {
@@ -1121,13 +1181,15 @@ class _$SuccessPostStoryImpl implements _SuccessPostStory {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function(bool? isFirstFetch)? loadingGetStory,
-    TResult Function(StoryEntity? data)? successGetStory,
+    TResult Function(StoryEntity? data, List<Placemark>? placemark)?
+        successGetStory,
     TResult Function(String? message)? errorGetStory,
     TResult Function()? loadingPostStory,
     TResult Function(String? message)? successPostStory,
     TResult Function(String? message)? errorPostStory,
     TResult Function()? loadingGetDetailStory,
-    TResult Function(StoryDetailEntity? data)? successGetDetailStory,
+    TResult Function(StoryDetailEntity? data, Placemark? placemark)?
+        successGetDetailStory,
     TResult Function(String? message)? errorGetDetailStory,
     TResult Function(File? file)? getImage,
     required TResult orElse(),
@@ -1276,13 +1338,15 @@ class _$ErrorPostStoryImpl implements _ErrorPostStory {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function(bool? isFirstFetch) loadingGetStory,
-    required TResult Function(StoryEntity? data) successGetStory,
+    required TResult Function(StoryEntity? data, List<Placemark>? placemark)
+        successGetStory,
     required TResult Function(String? message) errorGetStory,
     required TResult Function() loadingPostStory,
     required TResult Function(String? message) successPostStory,
     required TResult Function(String? message) errorPostStory,
     required TResult Function() loadingGetDetailStory,
-    required TResult Function(StoryDetailEntity? data) successGetDetailStory,
+    required TResult Function(StoryDetailEntity? data, Placemark? placemark)
+        successGetDetailStory,
     required TResult Function(String? message) errorGetDetailStory,
     required TResult Function(File? file) getImage,
   }) {
@@ -1294,13 +1358,15 @@ class _$ErrorPostStoryImpl implements _ErrorPostStory {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function(bool? isFirstFetch)? loadingGetStory,
-    TResult? Function(StoryEntity? data)? successGetStory,
+    TResult? Function(StoryEntity? data, List<Placemark>? placemark)?
+        successGetStory,
     TResult? Function(String? message)? errorGetStory,
     TResult? Function()? loadingPostStory,
     TResult? Function(String? message)? successPostStory,
     TResult? Function(String? message)? errorPostStory,
     TResult? Function()? loadingGetDetailStory,
-    TResult? Function(StoryDetailEntity? data)? successGetDetailStory,
+    TResult? Function(StoryDetailEntity? data, Placemark? placemark)?
+        successGetDetailStory,
     TResult? Function(String? message)? errorGetDetailStory,
     TResult? Function(File? file)? getImage,
   }) {
@@ -1312,13 +1378,15 @@ class _$ErrorPostStoryImpl implements _ErrorPostStory {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function(bool? isFirstFetch)? loadingGetStory,
-    TResult Function(StoryEntity? data)? successGetStory,
+    TResult Function(StoryEntity? data, List<Placemark>? placemark)?
+        successGetStory,
     TResult Function(String? message)? errorGetStory,
     TResult Function()? loadingPostStory,
     TResult Function(String? message)? successPostStory,
     TResult Function(String? message)? errorPostStory,
     TResult Function()? loadingGetDetailStory,
-    TResult Function(StoryDetailEntity? data)? successGetDetailStory,
+    TResult Function(StoryDetailEntity? data, Placemark? placemark)?
+        successGetDetailStory,
     TResult Function(String? message)? errorGetDetailStory,
     TResult Function(File? file)? getImage,
     required TResult orElse(),
@@ -1441,13 +1509,15 @@ class _$LoadingGetDetailStoryImpl implements _LoadingGetDetailStory {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function(bool? isFirstFetch) loadingGetStory,
-    required TResult Function(StoryEntity? data) successGetStory,
+    required TResult Function(StoryEntity? data, List<Placemark>? placemark)
+        successGetStory,
     required TResult Function(String? message) errorGetStory,
     required TResult Function() loadingPostStory,
     required TResult Function(String? message) successPostStory,
     required TResult Function(String? message) errorPostStory,
     required TResult Function() loadingGetDetailStory,
-    required TResult Function(StoryDetailEntity? data) successGetDetailStory,
+    required TResult Function(StoryDetailEntity? data, Placemark? placemark)
+        successGetDetailStory,
     required TResult Function(String? message) errorGetDetailStory,
     required TResult Function(File? file) getImage,
   }) {
@@ -1459,13 +1529,15 @@ class _$LoadingGetDetailStoryImpl implements _LoadingGetDetailStory {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function(bool? isFirstFetch)? loadingGetStory,
-    TResult? Function(StoryEntity? data)? successGetStory,
+    TResult? Function(StoryEntity? data, List<Placemark>? placemark)?
+        successGetStory,
     TResult? Function(String? message)? errorGetStory,
     TResult? Function()? loadingPostStory,
     TResult? Function(String? message)? successPostStory,
     TResult? Function(String? message)? errorPostStory,
     TResult? Function()? loadingGetDetailStory,
-    TResult? Function(StoryDetailEntity? data)? successGetDetailStory,
+    TResult? Function(StoryDetailEntity? data, Placemark? placemark)?
+        successGetDetailStory,
     TResult? Function(String? message)? errorGetDetailStory,
     TResult? Function(File? file)? getImage,
   }) {
@@ -1477,13 +1549,15 @@ class _$LoadingGetDetailStoryImpl implements _LoadingGetDetailStory {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function(bool? isFirstFetch)? loadingGetStory,
-    TResult Function(StoryEntity? data)? successGetStory,
+    TResult Function(StoryEntity? data, List<Placemark>? placemark)?
+        successGetStory,
     TResult Function(String? message)? errorGetStory,
     TResult Function()? loadingPostStory,
     TResult Function(String? message)? successPostStory,
     TResult Function(String? message)? errorPostStory,
     TResult Function()? loadingGetDetailStory,
-    TResult Function(StoryDetailEntity? data)? successGetDetailStory,
+    TResult Function(StoryDetailEntity? data, Placemark? placemark)?
+        successGetDetailStory,
     TResult Function(String? message)? errorGetDetailStory,
     TResult Function(File? file)? getImage,
     required TResult orElse(),
@@ -1566,7 +1640,7 @@ abstract class _$$SuccessGetDetailStoryImplCopyWith<$Res> {
           $Res Function(_$SuccessGetDetailStoryImpl) then) =
       __$$SuccessGetDetailStoryImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({StoryDetailEntity? data});
+  $Res call({StoryDetailEntity? data, Placemark? placemark});
 }
 
 /// @nodoc
@@ -1581,12 +1655,17 @@ class __$$SuccessGetDetailStoryImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? data = freezed,
+    Object? placemark = freezed,
   }) {
     return _then(_$SuccessGetDetailStoryImpl(
       data: freezed == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
               as StoryDetailEntity?,
+      placemark: freezed == placemark
+          ? _value.placemark
+          : placemark // ignore: cast_nullable_to_non_nullable
+              as Placemark?,
     ));
   }
 }
@@ -1594,14 +1673,16 @@ class __$$SuccessGetDetailStoryImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$SuccessGetDetailStoryImpl implements _SuccessGetDetailStory {
-  const _$SuccessGetDetailStoryImpl({this.data});
+  const _$SuccessGetDetailStoryImpl({this.data, this.placemark});
 
   @override
   final StoryDetailEntity? data;
+  @override
+  final Placemark? placemark;
 
   @override
   String toString() {
-    return 'StoryState.successGetDetailStory(data: $data)';
+    return 'StoryState.successGetDetailStory(data: $data, placemark: $placemark)';
   }
 
   @override
@@ -1609,11 +1690,13 @@ class _$SuccessGetDetailStoryImpl implements _SuccessGetDetailStory {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$SuccessGetDetailStoryImpl &&
-            (identical(other.data, data) || other.data == data));
+            (identical(other.data, data) || other.data == data) &&
+            (identical(other.placemark, placemark) ||
+                other.placemark == placemark));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, data);
+  int get hashCode => Object.hash(runtimeType, data, placemark);
 
   @JsonKey(ignore: true)
   @override
@@ -1627,17 +1710,19 @@ class _$SuccessGetDetailStoryImpl implements _SuccessGetDetailStory {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function(bool? isFirstFetch) loadingGetStory,
-    required TResult Function(StoryEntity? data) successGetStory,
+    required TResult Function(StoryEntity? data, List<Placemark>? placemark)
+        successGetStory,
     required TResult Function(String? message) errorGetStory,
     required TResult Function() loadingPostStory,
     required TResult Function(String? message) successPostStory,
     required TResult Function(String? message) errorPostStory,
     required TResult Function() loadingGetDetailStory,
-    required TResult Function(StoryDetailEntity? data) successGetDetailStory,
+    required TResult Function(StoryDetailEntity? data, Placemark? placemark)
+        successGetDetailStory,
     required TResult Function(String? message) errorGetDetailStory,
     required TResult Function(File? file) getImage,
   }) {
-    return successGetDetailStory(data);
+    return successGetDetailStory(data, placemark);
   }
 
   @override
@@ -1645,17 +1730,19 @@ class _$SuccessGetDetailStoryImpl implements _SuccessGetDetailStory {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function(bool? isFirstFetch)? loadingGetStory,
-    TResult? Function(StoryEntity? data)? successGetStory,
+    TResult? Function(StoryEntity? data, List<Placemark>? placemark)?
+        successGetStory,
     TResult? Function(String? message)? errorGetStory,
     TResult? Function()? loadingPostStory,
     TResult? Function(String? message)? successPostStory,
     TResult? Function(String? message)? errorPostStory,
     TResult? Function()? loadingGetDetailStory,
-    TResult? Function(StoryDetailEntity? data)? successGetDetailStory,
+    TResult? Function(StoryDetailEntity? data, Placemark? placemark)?
+        successGetDetailStory,
     TResult? Function(String? message)? errorGetDetailStory,
     TResult? Function(File? file)? getImage,
   }) {
-    return successGetDetailStory?.call(data);
+    return successGetDetailStory?.call(data, placemark);
   }
 
   @override
@@ -1663,19 +1750,21 @@ class _$SuccessGetDetailStoryImpl implements _SuccessGetDetailStory {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function(bool? isFirstFetch)? loadingGetStory,
-    TResult Function(StoryEntity? data)? successGetStory,
+    TResult Function(StoryEntity? data, List<Placemark>? placemark)?
+        successGetStory,
     TResult Function(String? message)? errorGetStory,
     TResult Function()? loadingPostStory,
     TResult Function(String? message)? successPostStory,
     TResult Function(String? message)? errorPostStory,
     TResult Function()? loadingGetDetailStory,
-    TResult Function(StoryDetailEntity? data)? successGetDetailStory,
+    TResult Function(StoryDetailEntity? data, Placemark? placemark)?
+        successGetDetailStory,
     TResult Function(String? message)? errorGetDetailStory,
     TResult Function(File? file)? getImage,
     required TResult orElse(),
   }) {
     if (successGetDetailStory != null) {
-      return successGetDetailStory(data);
+      return successGetDetailStory(data, placemark);
     }
     return orElse();
   }
@@ -1742,10 +1831,12 @@ class _$SuccessGetDetailStoryImpl implements _SuccessGetDetailStory {
 }
 
 abstract class _SuccessGetDetailStory implements StoryState {
-  const factory _SuccessGetDetailStory({final StoryDetailEntity? data}) =
-      _$SuccessGetDetailStoryImpl;
+  const factory _SuccessGetDetailStory(
+      {final StoryDetailEntity? data,
+      final Placemark? placemark}) = _$SuccessGetDetailStoryImpl;
 
   StoryDetailEntity? get data;
+  Placemark? get placemark;
   @JsonKey(ignore: true)
   _$$SuccessGetDetailStoryImplCopyWith<_$SuccessGetDetailStoryImpl>
       get copyWith => throw _privateConstructorUsedError;
@@ -1818,13 +1909,15 @@ class _$ErrorGetDetailStoryImpl implements _ErrorGetDetailStory {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function(bool? isFirstFetch) loadingGetStory,
-    required TResult Function(StoryEntity? data) successGetStory,
+    required TResult Function(StoryEntity? data, List<Placemark>? placemark)
+        successGetStory,
     required TResult Function(String? message) errorGetStory,
     required TResult Function() loadingPostStory,
     required TResult Function(String? message) successPostStory,
     required TResult Function(String? message) errorPostStory,
     required TResult Function() loadingGetDetailStory,
-    required TResult Function(StoryDetailEntity? data) successGetDetailStory,
+    required TResult Function(StoryDetailEntity? data, Placemark? placemark)
+        successGetDetailStory,
     required TResult Function(String? message) errorGetDetailStory,
     required TResult Function(File? file) getImage,
   }) {
@@ -1836,13 +1929,15 @@ class _$ErrorGetDetailStoryImpl implements _ErrorGetDetailStory {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function(bool? isFirstFetch)? loadingGetStory,
-    TResult? Function(StoryEntity? data)? successGetStory,
+    TResult? Function(StoryEntity? data, List<Placemark>? placemark)?
+        successGetStory,
     TResult? Function(String? message)? errorGetStory,
     TResult? Function()? loadingPostStory,
     TResult? Function(String? message)? successPostStory,
     TResult? Function(String? message)? errorPostStory,
     TResult? Function()? loadingGetDetailStory,
-    TResult? Function(StoryDetailEntity? data)? successGetDetailStory,
+    TResult? Function(StoryDetailEntity? data, Placemark? placemark)?
+        successGetDetailStory,
     TResult? Function(String? message)? errorGetDetailStory,
     TResult? Function(File? file)? getImage,
   }) {
@@ -1854,13 +1949,15 @@ class _$ErrorGetDetailStoryImpl implements _ErrorGetDetailStory {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function(bool? isFirstFetch)? loadingGetStory,
-    TResult Function(StoryEntity? data)? successGetStory,
+    TResult Function(StoryEntity? data, List<Placemark>? placemark)?
+        successGetStory,
     TResult Function(String? message)? errorGetStory,
     TResult Function()? loadingPostStory,
     TResult Function(String? message)? successPostStory,
     TResult Function(String? message)? errorPostStory,
     TResult Function()? loadingGetDetailStory,
-    TResult Function(StoryDetailEntity? data)? successGetDetailStory,
+    TResult Function(StoryDetailEntity? data, Placemark? placemark)?
+        successGetDetailStory,
     TResult Function(String? message)? errorGetDetailStory,
     TResult Function(File? file)? getImage,
     required TResult orElse(),
@@ -2008,13 +2105,15 @@ class _$GetImageImpl implements _GetImage {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function(bool? isFirstFetch) loadingGetStory,
-    required TResult Function(StoryEntity? data) successGetStory,
+    required TResult Function(StoryEntity? data, List<Placemark>? placemark)
+        successGetStory,
     required TResult Function(String? message) errorGetStory,
     required TResult Function() loadingPostStory,
     required TResult Function(String? message) successPostStory,
     required TResult Function(String? message) errorPostStory,
     required TResult Function() loadingGetDetailStory,
-    required TResult Function(StoryDetailEntity? data) successGetDetailStory,
+    required TResult Function(StoryDetailEntity? data, Placemark? placemark)
+        successGetDetailStory,
     required TResult Function(String? message) errorGetDetailStory,
     required TResult Function(File? file) getImage,
   }) {
@@ -2026,13 +2125,15 @@ class _$GetImageImpl implements _GetImage {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function(bool? isFirstFetch)? loadingGetStory,
-    TResult? Function(StoryEntity? data)? successGetStory,
+    TResult? Function(StoryEntity? data, List<Placemark>? placemark)?
+        successGetStory,
     TResult? Function(String? message)? errorGetStory,
     TResult? Function()? loadingPostStory,
     TResult? Function(String? message)? successPostStory,
     TResult? Function(String? message)? errorPostStory,
     TResult? Function()? loadingGetDetailStory,
-    TResult? Function(StoryDetailEntity? data)? successGetDetailStory,
+    TResult? Function(StoryDetailEntity? data, Placemark? placemark)?
+        successGetDetailStory,
     TResult? Function(String? message)? errorGetDetailStory,
     TResult? Function(File? file)? getImage,
   }) {
@@ -2044,13 +2145,15 @@ class _$GetImageImpl implements _GetImage {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function(bool? isFirstFetch)? loadingGetStory,
-    TResult Function(StoryEntity? data)? successGetStory,
+    TResult Function(StoryEntity? data, List<Placemark>? placemark)?
+        successGetStory,
     TResult Function(String? message)? errorGetStory,
     TResult Function()? loadingPostStory,
     TResult Function(String? message)? successPostStory,
     TResult Function(String? message)? errorPostStory,
     TResult Function()? loadingGetDetailStory,
-    TResult Function(StoryDetailEntity? data)? successGetDetailStory,
+    TResult Function(StoryDetailEntity? data, Placemark? placemark)?
+        successGetDetailStory,
     TResult Function(String? message)? errorGetDetailStory,
     TResult Function(File? file)? getImage,
     required TResult orElse(),

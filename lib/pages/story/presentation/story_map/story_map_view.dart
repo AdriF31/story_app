@@ -30,20 +30,19 @@ class StoryMapView extends StatelessWidget {
             return BlocConsumer<StoryCubit, StoryState>(
               listener: (_, state) {
                 state.maybeWhen(
-                    successGetStory: (data) {
+                    successGetStory: (data, placemark) {
                       data?.listStory?.forEach((element) {
                         markers.add(Marker(
                             markerId: MarkerId(element.id ?? ""),
                             position:
                                 LatLng(element.lat ?? 0, element.lon ?? 0),
-                            infoWindow:
-                                InfoWindow(title: element.description)));
+                            infoWindow: InfoWindow(title: element.name)));
                       });
                     },
                     orElse: () {});
               },
               builder: (_, state) {
-                return state.maybeWhen(successGetStory: (data) {
+                return state.maybeWhen(successGetStory: (data, placemark) {
                   return Stack(
                     children: [
                       GoogleMapWidget(
