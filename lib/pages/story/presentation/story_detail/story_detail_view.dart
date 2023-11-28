@@ -88,8 +88,7 @@ class StoryDetailView extends StatelessWidget {
                             style: text18WhiteMedium,
                           ),
                           if (data?.story?.lat != null &&
-                              data?.story?.lon != null &&
-                              FlavorConfig.instance?.variables['premium']) ...[
+                              data?.story?.lon != null) ...[
                             Spacer(),
                             InkWell(
                               onTap: () {
