@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -24,12 +25,87 @@ class PostStoryView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TextEditingController controller = TextEditingController();
-
+    TextEditingController latController = TextEditingController();
+    TextEditingController lonController = TextEditingController();
     GlobalKey<FormState> form = GlobalKey<FormState>();
-
     bool? isLoading = false;
-
     Completer<GoogleMapController> googleMapController = Completer();
+
+    openMaps(LatLng? pos) {
+      showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (_) {
+            return PopScope(
+              canPop: false,
+              child: Dialog(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8)),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ClipRRect(
+                      borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(8),
+                          topRight: Radius.circular(8)),
+                      child: Container(
+                        height: 300,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8)),
+                        child: Stack(
+                          children: [
+                            GoogleMapWidget(
+                                gMapsController: googleMapController,
+                                myLocationButtonEnabled: true,
+                                lat: pos?.latitude,
+                                lon: pos?.longitude,
+                                markers: {
+                                  Marker(
+                                      draggable: true,
+                                      markerId: MarkerId("id"),
+                                      position: LatLng(pos?.latitude ?? 0,
+                                          pos?.longitude ?? 0),
+                                      onDragEnd: ((newPosition) {
+                                        context
+                                            .read<PositionCubit>()
+                                            .changePosition(
+                                                coordinates: newPosition);
+                                      }))
+                                }),
+                            const Positioned(
+                              top: 10,
+                              left: 10,
+                              child: Tooltip(
+                                message:
+                                    "Tahan dan geser marker untuk memilih lokasi",
+                                triggerMode: TooltipTriggerMode.tap,
+                                child: Icon(
+                                  FluentIcons.info_24_regular,
+                                  color: primaryColor,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: ElevatedButtonWidget(
+                        margin: EdgeInsets.all(16),
+                        buttonText: "Pilih",
+                        onPressed: () {
+                          context.pop();
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          });
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Post Story"),
@@ -139,46 +215,101 @@ class PostStoryView extends StatelessWidget {
                         ),
                       ],
                     ),
-                    SizedBox(
-                      height: 24,
-                    ),
-                    BlocBuilder<PositionCubit, PositionState>(
-                      builder: (_, state) {
-                        return state.maybeWhen(success: (pos) {
-                          return Column(
-                            children: [
-                              Text(
-                                  "${context.read<PositionCubit>().coordinate?.latitude}"),
-                              Text(
-                                  "${context.read<PositionCubit>().coordinate?.longitude}"),
-                              Text("${pos?.longitude}"),
-                              Container(
-                                height: 300,
-                                child: GoogleMapWidget(
-                                    gMapsController: googleMapController,
-                                    lat: pos?.latitude,
-                                    lon: pos?.longitude,
-                                    markers: {
-                                      Marker(
-                                          draggable: true,
-                                          markerId: MarkerId("id"),
-                                          position: LatLng(pos?.latitude ?? 0,
-                                              pos?.longitude ?? 0),
-                                          onDragEnd: ((newPosition) {
-                                            context
-                                                .read<PositionCubit>()
-                                                .changePosition(
-                                                    coordinates: newPosition);
-                                          }))
-                                    }),
-                              ),
-                            ],
-                          );
-                        }, orElse: () {
-                          return SizedBox.shrink();
-                        });
-                      },
-                    )
+                    if (FlavorConfig.instance?.variables?['premium']!) ...[
+                      SizedBox(
+                        height: 24,
+                      ),
+                      BlocBuilder<PositionCubit, PositionState>(
+                        builder: (context, state) {
+                          return state.maybeWhen(success: (pos) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                GestureDetector(
+                                    onTap: () {
+                                      openMaps(pos);
+                                    },
+                                    child: Row(
+                                      children: [
+                                        Icon(FluentIcons.location_24_regular),
+                                        const SizedBox(
+                                          width: 8,
+                                        ),
+                                        Text("pick location"),
+                                      ],
+                                    )),
+                                const SizedBox(
+                                  height: 24,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Flexible(
+                                      flex: 1,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "Latitude",
+                                            semanticsLabel: "Latitude",
+                                            style: text18WhiteRegular,
+                                          ),
+                                          const SizedBox(
+                                            height: 12,
+                                          ),
+                                          TextField(
+                                            controller: latController
+                                              ..text = (pos?.latitude ?? "")
+                                                  .toString(),
+                                            readOnly: true,
+                                            decoration: customInputDecoration(
+                                                filled: true,
+                                                hintText: "Latitude"),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 8,
+                                    ),
+                                    Flexible(
+                                      flex: 1,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "Longitude",
+                                            semanticsLabel: "Longitude",
+                                            style: text18WhiteRegular,
+                                          ),
+                                          const SizedBox(
+                                            height: 12,
+                                          ),
+                                          TextField(
+                                            readOnly: true,
+                                            controller: lonController
+                                              ..text = (pos?.longitude ?? "")
+                                                  .toString(),
+                                            decoration: customInputDecoration(
+                                                filled: true,
+                                                hintText: "Longitude"),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            );
+                          }, orElse: () {
+                            return SizedBox.shrink();
+                          });
+                        },
+                      ),
+                    ]
                   ],
                 ),
               ),

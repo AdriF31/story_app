@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:story_app/pages/story/presentation/cubit/story_cubit/story_cubit.dart';
@@ -87,17 +88,27 @@ class StoryDetailView extends StatelessWidget {
                             style: text18WhiteMedium,
                           ),
                           if (data?.story?.lat != null &&
-                              data?.story?.lon != null) ...[
+                              data?.story?.lon != null &&
+                              FlavorConfig.instance?.variables['premium']) ...[
                             Spacer(),
-                            IconButton(
-                                onPressed: () {
-                                  openMaps(
-                                      lat: data?.story?.lat,
-                                      lon: data?.story?.lon,
-                                      id: data?.story?.id,
-                                      title: placemark?.locality);
-                                },
-                                icon: Icon(FluentIcons.location_24_regular)),
+                            InkWell(
+                              onTap: () {
+                                openMaps(
+                                    lat: data?.story?.lat,
+                                    lon: data?.story?.lon,
+                                    id: data?.story?.id,
+                                    title: placemark?.locality);
+                              },
+                              child: Row(
+                                children: [
+                                  Icon(FluentIcons.location_24_regular),
+                                  const SizedBox(
+                                    width: 8,
+                                  ),
+                                  Text("Lokasi"),
+                                ],
+                              ),
+                            ),
                           ]
                         ],
                       ),

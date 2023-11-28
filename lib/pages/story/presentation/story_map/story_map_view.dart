@@ -88,8 +88,9 @@ class StoryMapView extends StatelessWidget {
                                                           .withOpacity(0.4))
                                                 ]),
                                             width: MediaQuery.of(context)
-                                                .size
-                                                .width,
+                                                    .size
+                                                    .width *
+                                                0.8,
                                             height: MediaQuery.of(context)
                                                     .size
                                                     .height *
@@ -153,7 +154,7 @@ class StoryMapView extends StatelessWidget {
                                                                         index]
                                                                     .id);
                                                           },
-                                                          child: Text(
+                                                          child: const Text(
                                                             "Lihat detail",
                                                             style:
                                                                 text16BlackRegular,

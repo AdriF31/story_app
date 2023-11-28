@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:go_router/go_router.dart';
 import 'package:story_app/routes/routes.dart';
 import 'package:story_app/utils/secure_storage.dart';
@@ -25,7 +26,11 @@ class _SplashScreenState extends State<SplashScreen> {
     Future.delayed(const Duration(seconds: 2), () async {
       if (await SecureStorage.getToken() != null &&
           (await SecureStorage.getToken()).isNotEmpty) {
-        context.go(bottomNavigationRoute);
+        if (FlavorConfig.instance.variables['premium']!) {
+          context.go(bottomNavigationRoute);
+        } else {
+          context.go(listStoryRoute);
+        }
       } else {
         context.go(loginRoute);
       }

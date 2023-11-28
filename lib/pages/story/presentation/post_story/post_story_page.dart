@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:story_app/pages/story/presentation/cubit/position_cubit/position_cubit.dart';
 import 'package:story_app/pages/story/presentation/cubit/story_cubit/story_cubit.dart';
 import 'package:story_app/pages/story/presentation/post_story/post_story_view.dart';
@@ -16,9 +17,13 @@ class PostStoryPage extends StatelessWidget {
         BlocProvider<StoryCubit>(
           create: (context) => StoryCubit(),
         ),
-        BlocProvider(
-          create: (context) => PositionCubit()..checkPermission(),
-        ),
+        FlavorConfig.instance.variables['premium']
+            ? BlocProvider(
+                create: (context) => PositionCubit()..checkPermission(),
+              )
+            : BlocProvider(
+                create: (context) => PositionCubit(),
+              ),
       ],
       child: PostStoryView(
         callback: callback,

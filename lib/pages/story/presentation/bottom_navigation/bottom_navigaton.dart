@@ -41,7 +41,8 @@ class _BottomNavigationState extends State<BottomNavigation> {
                     NavigationDestination(
                         icon: Icon(FluentIcons.home_20_filled), label: "Home"),
                     NavigationDestination(
-                        icon: Icon(FluentIcons.map_24_filled), label: "Home"),
+                        icon: Icon(FluentIcons.map_24_filled),
+                        label: "Story Map"),
                   ],
                   selectedIndex: selectedIndex!,
                   onDestinationSelected: (value) {

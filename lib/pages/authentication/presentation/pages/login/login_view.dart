@@ -1,6 +1,7 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:story_app/common.dart';
@@ -34,7 +35,11 @@ class LoginView extends StatelessWidget {
           state.maybeWhen(
               loginSuccess: (data) {
                 Fluttertoast.showToast(msg: data?.message ?? "");
-                context.go(listStoryRoute);
+                if (FlavorConfig.instance.variables['premium']!) {
+                  context.go(bottomNavigationRoute);
+                } else {
+                  context.go(listStoryRoute);
+                }
               },
               loginError: (message) {
                 Fluttertoast.showToast(msg: message ?? "");

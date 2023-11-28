@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
@@ -24,7 +25,7 @@ class ListStoryView extends StatelessWidget {
         RefreshController(initialRefresh: false);
     int? selectedIndex = 0;
     void onRefresh() {
-      context.read<StoryCubit>().page = 0;
+      context.read<StoryCubit>().page = 1;
       context.read<StoryCubit>().listStory?.clear();
       context.read<StoryCubit>().getStories();
       refreshController.refreshCompleted();
@@ -37,7 +38,9 @@ class ListStoryView extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Story App"),
+        title: Text(FlavorConfig.instance.variables['premium']
+            ? "Story App (Premium)"
+            : "Story App (Free)"),
       ),
       endDrawer: Drawer(
         child: SafeArea(child: BlocBuilder<LanguageCubit, LocaleState>(
@@ -125,7 +128,7 @@ class ListStoryView extends StatelessWidget {
               color: primaryColor,
               size: 40,
             ));
-          }, successGetStory: (data, _) {
+          }, orElse: () {
             return SmartRefresher(
               controller: refreshController,
               onRefresh: onRefresh,
@@ -202,6 +205,17 @@ class ListStoryView extends StatelessWidget {
                                   height: 200,
                                 );
                               },
+                              errorWidget: (context, url, _) {
+                                return Container(
+                                  color: divider,
+                                  width: double.infinity,
+                                  height: 200,
+                                  child: Center(
+                                    child:
+                                        Icon(FluentIcons.image_off_20_filled),
+                                  ),
+                                );
+                              },
                             ),
                             Padding(
                               padding:
@@ -242,8 +256,6 @@ class ListStoryView extends StatelessWidget {
                 ),
               ),
             );
-          }, orElse: () {
-            return const SizedBox.shrink();
           });
         },
       ),

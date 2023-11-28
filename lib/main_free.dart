@@ -7,8 +7,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await di.init();
   FlavorConfig(
-    name: "premium",
-    variables: {"premium": true},
+    name: "free",
+    variables: {"premium": false},
   );
 
   runApp(const App());

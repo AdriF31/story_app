@@ -9,6 +9,7 @@ class GoogleMapWidget extends StatelessWidget {
       required this.lat,
       required this.lon,
       this.scrollGestureEnabled = true,
+      this.myLocationButtonEnabled = false,
       required this.gMapsController,
       required this.markers});
 
@@ -17,6 +18,7 @@ class GoogleMapWidget extends StatelessWidget {
   final Set<Marker>? markers;
   final bool? scrollGestureEnabled;
   final Completer<GoogleMapController>? gMapsController;
+  final bool? myLocationButtonEnabled;
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +28,8 @@ class GoogleMapWidget extends StatelessWidget {
         },
         mapType: MapType.normal,
         scrollGesturesEnabled: scrollGestureEnabled!,
+        myLocationEnabled: true,
+        myLocationButtonEnabled: myLocationButtonEnabled!,
         markers: markers!,
         initialCameraPosition: CameraPosition(
             target: LatLng(

@@ -20,12 +20,12 @@ class StoryCubit extends Cubit<StoryState> {
   List<Placemark>? placemarks;
   File? photo;
   Position? position;
-  int page = 0;
-  List<ListStoryEntity>? listStory;
+  int page = 1;
+  List<ListStoryEntity>? listStory = [];
 
   void getStories({int? location = 0, int? size = 15}) async {
-    if (page == 0) {
-      emit(StoryState.loadingGetStory(isFirstFetch: page == 0 ? true : false));
+    if (page == 1) {
+      emit(StoryState.loadingGetStory(isFirstFetch: page == 1 ? true : false));
     }
     try {
       bool connection = await checkConnection();
@@ -34,26 +34,28 @@ class StoryCubit extends Cubit<StoryState> {
             location: location, page: page, size: size);
         res.fold((l) => emit(StoryState.errorGetStory(message: l.message)),
             (r) {
+          print("length ${listStory?.length}");
           if ((listStory ?? []).isNotEmpty) {
             listStory?.addAll(r.listStory ?? []);
           } else {
             listStory = r.listStory;
           }
+          print("length ${listStory?.length}");
           page++;
-          if (location == 1) {
-            r.listStory?.forEach((element) async {
-              List<Placemark> placemark = await placemarkFromCoordinates(
-                  element.lat ?? 0, element.lon ?? 0);
-              placemarks?.add(placemark.first);
-            });
-          }
+          // if (location == 1) {
+          //   r.listStory?.forEach((element) async {
+          //     List<Placemark> placemark = await placemarkFromCoordinates(
+          //         element.lat ?? 0, element.lon ?? 0);
+          //     placemarks?.add(placemark.first);
+          //   });
+          // }
           emit(StoryState.successGetStory(data: r, placemark: placemarks));
         });
       } else {
-        emit(StoryState.errorGetStory(message: "Check your connection"));
+        emit(const StoryState.errorGetStory(message: "Check your connection"));
       }
     } catch (e) {
-      emit(StoryState.errorGetStory());
+      emit(const StoryState.errorGetStory());
     }
   }
 
@@ -83,7 +85,7 @@ class StoryCubit extends Cubit<StoryState> {
       res.fold((l) => emit(StoryState.errorPostStory(message: l.message)),
           (r) => emit(StoryState.successPostStory(message: r.data['message'])));
     } catch (e) {
-      emit(StoryState.errorPostStory());
+      emit(const StoryState.errorPostStory());
     }
   }
 
