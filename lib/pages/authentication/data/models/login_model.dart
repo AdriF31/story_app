@@ -2,15 +2,12 @@
 //
 //     final loginModel = loginModelFromJson(jsonString);
 
-import 'dart:convert';
-
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:story_app/pages/authentication/domain/entities/login_entity.dart';
 
-LoginModel loginModelFromJson(String str) =>
-    LoginModel.fromJson(json.decode(str));
+part 'login_model.g.dart';
 
-String loginModelToJson(LoginModel data) => json.encode(data.toJson());
-
+@JsonSerializable()
 class LoginModel extends LoginEntity {
   final bool? error;
   final String? message;
@@ -22,21 +19,13 @@ class LoginModel extends LoginEntity {
     this.loginResult,
   }) : super(error: error, message: message, loginResult: loginResult);
 
-  factory LoginModel.fromJson(Map<String, dynamic> json) => LoginModel(
-        error: json["error"],
-        message: json["message"],
-        loginResult: json["loginResult"] == null
-            ? null
-            : LoginResult.fromJson(json["loginResult"]),
-      );
+  factory LoginModel.fromJson(Map<String, dynamic> json) =>
+      _$LoginModelFromJson(json);
 
-  Map<String, dynamic> toJson() => {
-        "error": error,
-        "message": message,
-        "loginResult": loginResult?.toJson(),
-      };
+  Map<String, dynamic> toJson() => _$LoginModelToJson(this);
 }
 
+@JsonSerializable()
 class LoginResult extends LoginResultEntity {
   final String? userId;
   final String? name;
@@ -48,15 +37,8 @@ class LoginResult extends LoginResultEntity {
     this.token,
   }) : super(userId: userId, name: name, token: token);
 
-  factory LoginResult.fromJson(Map<String, dynamic> json) => LoginResult(
-        userId: json["userId"],
-        name: json["name"],
-        token: json["token"],
-      );
+  factory LoginResult.fromJson(Map<String, dynamic> json) =>
+      _$LoginResultFromJson(json);
 
-  Map<String, dynamic> toJson() => {
-        "userId": userId,
-        "name": name,
-        "token": token,
-      };
+  Map<String, dynamic> toJson() => _$LoginResultToJson(this);
 }

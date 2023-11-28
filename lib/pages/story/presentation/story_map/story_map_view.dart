@@ -94,7 +94,7 @@ class StoryMapView extends StatelessWidget {
                                             height: MediaQuery.of(context)
                                                     .size
                                                     .height *
-                                                0.2,
+                                                0.15,
                                             margin: EdgeInsets.all(8),
                                             padding: EdgeInsets.all(8),
                                             child: Row(
@@ -103,13 +103,18 @@ class StoryMapView extends StatelessWidget {
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                CachedNetworkImage(
-                                                  imageUrl: data
-                                                          ?.listStory?[index]
-                                                          .photoUrl ??
-                                                      "https://",
-                                                  width: 100,
-                                                  height: double.infinity,
+                                                ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(16),
+                                                  child: CachedNetworkImage(
+                                                    imageUrl: data
+                                                            ?.listStory?[index]
+                                                            .photoUrl ??
+                                                        "https://",
+                                                    width: 100,
+                                                    fit: BoxFit.fitWidth,
+                                                    height: double.infinity,
+                                                  ),
                                                 ),
                                                 const SizedBox(
                                                   width: 24,
@@ -135,7 +140,7 @@ class StoryMapView extends StatelessWidget {
                                                               "",
                                                           style:
                                                               text14BlackBold,
-                                                          maxLines: 5,
+                                                          maxLines: 3,
                                                           overflow: TextOverflow
                                                               .ellipsis,
                                                         ),
