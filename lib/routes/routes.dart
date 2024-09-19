@@ -8,6 +8,9 @@ import 'package:story_app/pages/story/presentation/list_story/list_story_page.da
 import 'package:story_app/pages/story/presentation/post_story/post_story_page.dart';
 import 'package:story_app/pages/story/presentation/story_detail/story_detail_page.dart';
 
+import '../core/app/app.dart';
+import '../main.dart';
+
 const splashScreenRoute = "/";
 const loginRoute = "/login";
 const registerRoute = "/register";
@@ -15,7 +18,8 @@ const listStoryRoute = "/list_story";
 const postStoryRoute = "/postStory";
 const detailStoryRoute = "/detailStory";
 const bottomNavigationRoute = "/bottomNavigation";
-final GoRouter router = GoRouter(routes: <RouteBase>[
+final GoRouter router =
+    GoRouter(navigatorKey: alice.getNavigatorKey(), routes: <RouteBase>[
   GoRoute(
     path: splashScreenRoute,
     name: "splashscreen",

@@ -72,7 +72,7 @@ class LoginView extends StatelessWidget {
                   child: Column(
                     children: [
                       Semantics(
-                        label: "Email TextField",
+                        label: "Email",
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -84,29 +84,33 @@ class LoginView extends StatelessWidget {
                             const SizedBox(
                               height: 12,
                             ),
-                            TextFormField(
-                              controller: emailController,
-                              decoration: customInputDecoration(
-                                hintText: "Email",
-                                prefixIcon: const Icon(
-                                  FluentIcons.mail_24_regular,
-                                  size: 28,
+                            Semantics(
+                              explicitChildNodes: true,
+                              label: "adrayjena4everinlove",
+                              child: TextFormField(
+                                controller: emailController,
+                                decoration: customInputDecoration(
+                                  hintText: "Email",
+                                  prefixIcon: const Icon(
+                                    FluentIcons.mail_24_regular,
+                                    size: 28,
+                                  ),
                                 ),
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return AppLocalizations.of(context)!
+                                        .email_empty_error;
+                                  }
+                                  if (RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                          .hasMatch(emailController.text) ==
+                                      false) {
+                                    return AppLocalizations.of(context)!
+                                        .email_not_valid;
+                                  }
+                                  return null;
+                                },
                               ),
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return AppLocalizations.of(context)!
-                                      .email_empty_error;
-                                }
-                                if (RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                        .hasMatch(emailController.text) ==
-                                    false) {
-                                  return AppLocalizations.of(context)!
-                                      .email_not_valid;
-                                }
-                                return null;
-                              },
-                            ),
+                            )
                           ],
                         ),
                       ),
@@ -124,40 +128,45 @@ class LoginView extends StatelessWidget {
                           const SizedBox(
                             height: 12,
                           ),
-                          TextFormField(
-                            controller: passwordController,
-                            obscureText: obscured!,
-                            decoration: customInputDecoration(
-                                hintText: "Password",
-                                prefixIcon: const Icon(
-                                  FluentIcons.key_24_regular,
-                                  size: 28,
-                                ),
-                                suffixIcon: IconButton(
-                                    onPressed: () {
-                                      if (obscured!) {
-                                        context.read<AuthBloc>().add(
-                                            ObscurePassword(isObscure: false));
-                                      } else {
-                                        context.read<AuthBloc>().add(
-                                            ObscurePassword(isObscure: true));
-                                      }
-                                    },
-                                    icon: Icon(obscured!
-                                        ? FluentIcons.eye_24_regular
-                                        : FluentIcons.eye_off_24_regular))),
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return AppLocalizations.of(context)!
-                                    .password_empty_error;
-                              }
-                              if (value.length < 8) {
-                                return AppLocalizations.of(context)!
-                                    .password_length_error;
-                              }
-                              return null;
-                            },
-                          ),
+                          Semantics(
+                            explicitChildNodes: true,
+                            label: "adray-ganteng",
+                            child: TextFormField(
+                              controller: passwordController,
+                              obscureText: obscured!,
+                              decoration: customInputDecoration(
+                                  hintText: "Password",
+                                  prefixIcon: const Icon(
+                                    FluentIcons.key_24_regular,
+                                    size: 28,
+                                  ),
+                                  suffixIcon: IconButton(
+                                      onPressed: () {
+                                        if (obscured!) {
+                                          context.read<AuthBloc>().add(
+                                              ObscurePassword(
+                                                  isObscure: false));
+                                        } else {
+                                          context.read<AuthBloc>().add(
+                                              ObscurePassword(isObscure: true));
+                                        }
+                                      },
+                                      icon: Icon(obscured!
+                                          ? FluentIcons.eye_24_regular
+                                          : FluentIcons.eye_off_24_regular))),
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return AppLocalizations.of(context)!
+                                      .password_empty_error;
+                                }
+                                if (value.length < 8) {
+                                  return AppLocalizations.of(context)!
+                                      .password_length_error;
+                                }
+                                return null;
+                              },
+                            ),
+                          )
                         ],
                       ),
                       const SizedBox(

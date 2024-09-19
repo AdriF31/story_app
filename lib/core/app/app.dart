@@ -1,3 +1,4 @@
+import 'package:alice/alice.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:story_app/core/language/language_cubit.dart';
@@ -6,8 +7,20 @@ import 'package:story_app/utils/theme/app_theme.dart';
 
 import '../../common.dart';
 
-class App extends StatelessWidget {
+late Alice alice;
+
+class App extends StatefulWidget {
   const App({super.key});
+
+  @override
+  State<App> createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
