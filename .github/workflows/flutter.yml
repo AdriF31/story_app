@@ -29,7 +29,7 @@ jobs:
 
       # Build the APK
       - name: Build APK
-        run: flutter build apk --release
+        run: flutter build apk --debug
 
       # Upload APK as an artifact
       - name: Upload APK
