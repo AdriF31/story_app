@@ -1,0 +1,39 @@
+name: Flutter CI/CD
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the code from GitHub repository
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # Setup Flutter SDK
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 'stable'
+
+      # Run flutter pub get to install dependencies
+      - name: Install dependencies
+        run: flutter pub get
+
+      # Build the APK
+      - name: Build APK
+        run: flutter build apk --release
+
+      # Upload APK as an artifact
+      - name: Upload APK
+        uses: actions/upload-artifact@v3
+        with:
+          name: flutter-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
