@@ -16,6 +16,11 @@ jobs:
       # Checkout the code from GitHub repository
       - name: Checkout repository
         uses: actions/checkout@v2
+      - name: Set up Java 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'  # Use Temurin JDK, the recommended JDK for Android development
 
       # Setup Flutter SDK
       - name: Set up Flutter
