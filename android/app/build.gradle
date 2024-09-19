@@ -64,11 +64,11 @@ android {
     productFlavors {
         free {
             dimension "flavors"
-            applicationIdSuffix ".free"
+//            applicationIdSuffix ".free"
         }
         premium {
             dimension "flavors"
-            applicationIdSuffix ".premium"
+//            applicationIdSuffix ".premium"
         }
 
     }
