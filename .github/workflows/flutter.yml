@@ -42,3 +42,15 @@ jobs:
         with:
           name: flutter-apk
           path: build/app/outputs/apk/premium/debug/app-premium-debug.apk
+
+      - name: Upload APK to Firebase App Distribution
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
+        run: |
+          echo "${FIREBASE_SERVICE_ACCOUNT}" > ${HOME}/firebase-service-account.json
+          curl -sL https://firebase.tools | bash
+          firebase appdistribution:distribute build/app/outputs/flutter-apk/app-release.apk \
+            --app $FIREBASE_APP_ID \
+            --token $FIREBASE_TOKEN \
+            --groups "tested"

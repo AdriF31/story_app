@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "183540051191",
+    "project_id": "storyapp-338a4",
+    "storage_bucket": "storyapp-338a4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:183540051191:android:967b10b1e68877152777f2",
+        "android_client_info": {
+          "package_name": "com.drydev.story_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBOygtNCyfLj1sN_go7P2EaBTU1BYIb-bY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
