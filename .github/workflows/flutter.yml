@@ -60,6 +60,6 @@ jobs:
           GOOGLE_APPLICATION_CREDENTIALS: ${HOME}/firebase-service-account.json
           FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
         run: |
-          firebase appdistribution:distribute build/app/outputs/flutter-apk/app-release.apk \
+          firebase appdistribution:distribute build/app/outputs/apk/premium/debug/app-premium-debug.apk \
             --app $FIREBASE_APP_ID \
             --groups "tested"
