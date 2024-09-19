@@ -47,12 +47,11 @@ jobs:
 
       - name: Upload APK to Firebase App Distribution
         env:
-          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
           FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
         run: |
-          echo "${FIREBASE_SERVICE_ACCOUNT}" > ${HOME}/firebase-service-account.json
-          curl -sL https://firebase.tools | bash
           firebase appdistribution:distribute build/app/outputs/apk/premium/debug/app-premium-debug.apk \
             --app $FIREBASE_APP_ID \
             --token $FIREBASE_TOKEN \
-            --groups "tested"
+            --groups "tested" \
+    
