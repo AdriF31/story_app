@@ -16,6 +16,8 @@ jobs:
       # Checkout the code from GitHub repository
       - name: Checkout repository
         uses: actions/checkout@v2
+
+      # Set up Java 17
       - name: Set up Java 17
         uses: actions/setup-java@v3
         with:
@@ -36,30 +38,31 @@ jobs:
       - name: Build APK
         run: flutter build apk --debug --flavor premium lib/main.dart
 
-      # Upload APK as an artifact
-#      - name: Upload APK
-#        uses: actions/upload-artifact@v3
-#        with:
-#          name: flutter-apk
-#          path: build/app/outputs/apk/premium/debug/app-premium-debug.apk
-
-
-
+      # Save Firebase service account to file
       - name: Save Firebase service account to file
         env:
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
         run: |
           echo "${FIREBASE_SERVICE_ACCOUNT}" > ${HOME}/firebase-service-account.json
 
+      # Install Firebase CLI
       - name: Install Firebase CLI
         run: |
           curl -sL https://firebase.tools | bash
 
+      # Authenticate with Firebase
       - name: Authenticate with Firebase
+        env:
+          FIREBASE_AUTH_TOKEN: ${{ secrets.FIREBASE_AUTH_TOKEN }}
         run: |
           export GOOGLE_APPLICATION_CREDENTIALS=${HOME}/firebase-service-account.json
-          firebase --version # Verify the CLI version
+          firebase login:ci --token ${FIREBASE_AUTH_TOKEN} # Authenticate with CI token
 
+      - name: Verify Firebase CLI version
+        run: |
+          firebase --version
+
+      # Upload APK to Firebase App Distribution
       - name: Upload APK to Firebase App Distribution
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${HOME}/firebase-service-account.json
