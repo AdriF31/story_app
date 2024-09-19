@@ -50,7 +50,7 @@ jobs:
         run: |
           echo "${FIREBASE_SERVICE_ACCOUNT}" > ${HOME}/firebase-service-account.json
           curl -sL https://firebase.tools | bash
-          firebase appdistribution:distribute build/app/outputs/flutter-apk/app-release.apk \
+          firebase appdistribution:distribute build/app/outputs/apk/premium/debug/app-premium-debug.apk \
             --app $FIREBASE_APP_ID \
             --token $FIREBASE_TOKEN \
             --groups "tested"
