@@ -77,6 +77,8 @@ jobs:
           --release-notes "$(cat release_notes.txt)" \
           --groups "tested"
 
+
+
       - name: Remove credentials file
         if: success() || failure()
         run: |
