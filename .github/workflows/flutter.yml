@@ -31,8 +31,8 @@ jobs:
 #          flutter-version: '3.24.1'
 
       # Run flutter pub get to install dependencies
-      - name: Install dependencies
-        run: flutter pub get
+#      - name: Install dependencies
+#        run: flutter pub get
 
       # Build the APK
 #      - name: Build APK
