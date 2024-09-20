@@ -39,24 +39,31 @@ jobs:
 #        run: flutter build apk --debug --flavor premium lib/main.dart
 
 
-      # Save Firebase service account to file
-#      - name: Save Firebase service account to file
-#        env:
-#          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
-#        run: |
-#          echo "${FIREBASE_SERVICE_ACCOUNT}" > ${HOME}/firebase-service-account.json
+#       Save Firebase service account to file
+      - name: Save Firebase service account to file
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: |
+          echo "${FIREBASE_SERVICE_ACCOUNT}" > ${HOME}/firebase-service-account.json
 
       # Install Firebase CLI
       - name: Install Firebase CLI
         run: |
           curl -sL https://firebase.tools | bash
 
-      # Authenticate with Firebase using CI Token
-      - name: Authenticate with Firebase using CI token
+      # Authenticate with Firebase using service account
+      - name: Authenticate with Firebase using service account
         env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+          GOOGLE_APPLICATION_CREDENTIALS: ${HOME}/firebase-service-account.json
         run: |
-          firebase --token $FIREBASE_TOKEN projects:list  # This checks if authentication is successful
+          firebase projects:list  # This checks if authentication is successful
+
+      # Authenticate with Firebase using CI Token
+#      - name: Authenticate with Firebase using CI token
+#        env:
+#          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+#        run: |
+#          firebase --token $FIREBASE_TOKEN projects:list  # This checks if authentication is successful
 
       # Upload APK to Firebase App Distribution
 #      - name: Upload APK to Firebase App Distribution
