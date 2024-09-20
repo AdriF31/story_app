@@ -35,34 +35,36 @@ jobs:
         run: flutter pub get
 
       # Build the APK
-      - name: Build APK
-        run: flutter build apk --debug --flavor premium lib/main.dart
+#      - name: Build APK
+#        run: flutter build apk --debug --flavor premium lib/main.dart
 
 
       # Save Firebase service account to file
-      - name: Save Firebase service account to file
-        env:
-          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
-        run: |
-          echo "${FIREBASE_SERVICE_ACCOUNT}" > ${HOME}/firebase-service-account.json
+#      - name: Save Firebase service account to file
+#        env:
+#          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+#        run: |
+#          echo "${FIREBASE_SERVICE_ACCOUNT}" > ${HOME}/firebase-service-account.json
 
       # Install Firebase CLI
       - name: Install Firebase CLI
         run: |
           curl -sL https://firebase.tools | bash
 
-      - name: Authenticate with Firebase using service account
+      # Authenticate with Firebase using CI Token
+      - name: Authenticate with Firebase using CI token
         env:
-          GOOGLE_APPLICATION_CREDENTIALS: ${HOME}/firebase-service-account.json
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
         run: |
-          firebase projects:list  # This command checks if authentication is successful
+          firebase --token $FIREBASE_TOKEN projects:list  # This checks if authentication is successful
 
       # Upload APK to Firebase App Distribution
-      - name: Upload APK to Firebase App Distribution
-        env:
-          GOOGLE_APPLICATION_CREDENTIALS: ${HOME}/firebase-service-account.json
-          FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
-        run: |
-          firebase appdistribution:distribute build/app/outputs/apk/premium/debug/app-premium-debug.apk \
-            --app $FIREBASE_APP_ID \
-            --groups "tested"
+#      - name: Upload APK to Firebase App Distribution
+#        env:
+#          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+#          FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
+#        run: |
+#          firebase appdistribution:distribute build/app/outputs/apk/premium/debug/app-premium-debug.apk \
+#            --app $FIREBASE_APP_ID \
+#            --token $FIREBASE_TOKEN \
+#            --groups "tested"
