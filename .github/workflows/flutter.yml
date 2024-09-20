@@ -51,11 +51,11 @@ jobs:
         run: |
           curl -sL https://firebase.tools | bash
 
-      # Authenticate using service account
       - name: Authenticate with Firebase using service account
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${HOME}/firebase-service-account.json
         run: |
-          export GOOGLE_APPLICATION_CREDENTIALS=${HOME}/firebase-service-account.json
-          firebase --version  # Just to check the CLI is working correctly
+          firebase projects:list  # This command checks if authentication is successful
 
       # Upload APK to Firebase App Distribution
       - name: Upload APK to Firebase App Distribution
