@@ -44,7 +44,7 @@ jobs:
         env:
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
         run: |
-          echo "${FIREBASE_SERVICE_ACCOUNT}" > ${HOME}/firebase-service-account.json
+          echo "${FIREBASE_SERVICE_ACCOUNT}" > firebase-service-account.json
 
       # Install Firebase CLI
       - name: Install Firebase CLI
@@ -54,7 +54,7 @@ jobs:
       # Authenticate with Firebase using service account
       - name: Authenticate with Firebase using service account
         env:
-          GOOGLE_APPLICATION_CREDENTIALS: ${HOME}/firebase-service-account.json
+          GOOGLE_APPLICATION_CREDENTIALS: firebase-service-account.json
         run: |
           firebase projects:list  # This checks if authentication is successful
 
