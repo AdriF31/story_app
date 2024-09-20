@@ -38,6 +38,7 @@ jobs:
       - name: Build APK
         run: flutter build apk --debug --flavor premium lib/main.dart
 
+
       # Save Firebase service account to file
       - name: Save Firebase service account to file
         env:
@@ -50,17 +51,11 @@ jobs:
         run: |
           curl -sL https://firebase.tools | bash
 
-      # Authenticate with Firebase
-      - name: Authenticate with Firebase
-        env:
-          FIREBASE_AUTH_TOKEN: ${{ secrets.FIREBASE_AUTH_TOKEN }}
+      # Authenticate using service account
+      - name: Authenticate with Firebase using service account
         run: |
           export GOOGLE_APPLICATION_CREDENTIALS=${HOME}/firebase-service-account.json
-          firebase login:ci --token ${FIREBASE_AUTH_TOKEN} # Authenticate with CI token
-
-      - name: Verify Firebase CLI version
-        run: |
-          firebase --version
+          firebase --version  # Just to check the CLI is working correctly
 
       # Upload APK to Firebase App Distribution
       - name: Upload APK to Firebase App Distribution
