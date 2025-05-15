@@ -1,5 +1,9 @@
 # 📖 Story App
 
+## 🎯 Purpose
+
+This application was developed as part of the **Dicoding course submission**, showcasing good software architecture practices and integrating modern mobile development workflows.
+
 **Story App** is a mobile application built with **Flutter**, applying **Clean Architecture** and the **Separation of Concerns** principle. The project is structured into three main layers:
 
 - **Domain Layer**: Contains entities, abstract repositories, and use cases.
@@ -16,10 +20,6 @@
 - **CI/CD Integration**:
   - Automated build, test, and deployment process using **GitHub Actions**.
   - Application distribution via **Firebase App Distribution** after successful CI runs.
-
-## 🎯 Purpose
-
-This application was developed as part of the **Dicoding course submission**, showcasing good software architecture practices and integrating modern mobile development workflows.
 
 ## 🚀 Technologies Used
 
