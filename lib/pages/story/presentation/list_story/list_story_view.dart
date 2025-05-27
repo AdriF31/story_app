@@ -16,6 +16,8 @@ import 'package:story_app/utils/secure_storage.dart';
 import 'package:story_app/utils/theme/color.dart';
 import 'package:story_app/utils/theme/text_style.dart';
 
+import '../../../../l10n/app_localizations.dart';
+
 class ListStoryView extends StatelessWidget {
   const ListStoryView({super.key});
 

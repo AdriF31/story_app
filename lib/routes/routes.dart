@@ -1,4 +1,6 @@
+import 'package:chucker_flutter/chucker_flutter.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:story_app/pages/authentication/presentation/pages/login/login_page.dart';
 import 'package:story_app/pages/authentication/presentation/pages/register/register_page.dart';
@@ -19,7 +21,20 @@ const postStoryRoute = "/postStory";
 const detailStoryRoute = "/detailStory";
 const bottomNavigationRoute = "/bottomNavigation";
 final GoRouter router =
-    GoRouter(navigatorKey: alice.getNavigatorKey(), routes: <RouteBase>[
+    GoRouter(
+      observers: [ChuckerFlutter.navigatorObserver],
+        routes: <RouteBase>[
+      if(kDebugMode)
+        GoRoute(
+          path: '/chucker',
+          builder: (context, state) {
+            // Pakai Navigator.push biar bisa panggil UI-nya
+            Future.microtask(() => ChuckerFlutter.showChuckerScreen());
+            return const SizedBox(); // karena udah langsung navigate
+          },
+        ),
+
+
   GoRoute(
     path: splashScreenRoute,
     name: "splashscreen",

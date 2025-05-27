@@ -17,6 +17,8 @@ import 'package:story_app/utils/google_maps_widget.dart';
 import 'package:story_app/utils/theme/color.dart';
 import 'package:story_app/utils/theme/text_style.dart';
 
+import '../../../../l10n/app_localizations.dart';
+
 class PostStoryView extends StatelessWidget {
   const PostStoryView({super.key, this.callback});
 

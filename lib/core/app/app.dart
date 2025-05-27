@@ -1,4 +1,6 @@
-import 'package:alice/alice.dart';
+
+import 'package:chucker_flutter/chucker_flutter.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:story_app/core/language/language_cubit.dart';
@@ -6,8 +8,9 @@ import 'package:story_app/routes/routes.dart';
 import 'package:story_app/utils/theme/app_theme.dart';
 
 import '../../common.dart';
+import '../../l10n/app_localizations.dart';
+import '../../utils/dev_banner_overlay.dart';
 
-late Alice alice;
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -31,6 +34,7 @@ class _AppState extends State<App> {
           return MaterialApp.router(
             title: "Story App",
             debugShowCheckedModeBanner: false,
+
             locale:
                 Locale(state is LocaleInitial ? state.locale ?? "en" : 'en'),
             supportedLocales: const [
@@ -40,6 +44,27 @@ class _AppState extends State<App> {
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             theme: AppTheme.darkTheme,
             routerConfig: router,
+            builder: (context, child) {
+              return Stack(
+                children: [
+                  kDebugMode?
+                  Banner(
+                    message: "Chucker",
+                      location: BannerLocation.topStart,
+                  child:child,
+                      ):child??const SizedBox(),
+                  Positioned(
+                    top: 0,
+                    left: 0,
+                    child: GestureDetector(
+                      onTap: ()=>ChuckerFlutter.showChuckerScreen(),
+                      child: Container(color:Colors.transparent,width: 40,height: 40,),
+                    ),
+                  ),
+
+                ],
+              );
+            },
           );
         },
       ),

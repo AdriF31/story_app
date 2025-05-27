@@ -11,6 +11,8 @@ import 'package:story_app/utils/app_decoration.dart';
 import 'package:story_app/utils/elevated_button_widget.dart';
 import 'package:story_app/utils/theme/text_style.dart';
 
+import '../../../../../l10n/app_localizations.dart';
+
 class LoginView extends StatelessWidget {
   const LoginView({super.key});
 
