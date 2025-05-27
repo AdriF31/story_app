@@ -3,83 +3,60 @@ name: Flutter CI/CD
 on:
   push:
     tags:
-      - 'build'
-    branches:
-      - master
-  pull_request:
-    branches:
-      - master
+      - 'build*'
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout the code from GitHub repository
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      # Set up Java 17
       - name: Set up Java 17
         uses: actions/setup-java@v3
         with:
           java-version: '17'
-          distribution: 'temurin'  # Use Temurin JDK, the recommended JDK for Android development
+          distribution: 'temurin'
 
-      # Setup Flutter SDK
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.24.1'
+          flutter-version: '3.32.0'
 
-#       Run flutter pub get to install dependencies
       - name: Install dependencies
         run: flutter pub get
 
-#       Build the APK
       - name: Build APK
         run: flutter build apk --debug --flavor premium lib/main.dart
 
-#       Save Firebase service account to file
       - name: Save Firebase service account to file
         env:
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
-        run: |
-          echo "${FIREBASE_SERVICE_ACCOUNT}" > firebase-service-account.json
+        run: echo "$FIREBASE_SERVICE_ACCOUNT" > firebase-service-account.json
 
-      # Install Firebase CLI
       - name: Install Firebase CLI
-        run: |
-          curl -sL https://firebase.tools | bash
+        run: curl -sL https://firebase.tools | bash
 
-      # Authenticate with Firebase using service account
       - name: Authenticate with Firebase using service account
         env:
           GOOGLE_APPLICATION_CREDENTIALS: firebase-service-account.json
-        run: |
-          firebase projects:list  # This checks if authentication is successful
+        run: firebase projects:list
 
-      # Read release notes from file
       - name: Read release notes
         id: release_notes
-        run: |
-          cat release_notes.txt
-        continue-on-error: false
+        run: cat release_notes.txt
 
-      # Upload APK to Firebase App Distribution
       - name: Upload APK to Firebase App Distribution
         env:
           GOOGLE_APPLICATION_CREDENTIALS: firebase-service-account.json
           FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
         run: |
           firebase appdistribution:distribute build/app/outputs/apk/premium/debug/app-premium-debug.apk \
-          --app $FIREBASE_APP_ID \
-          --release-notes "$(cat release_notes.txt)" \
-          --groups "tested"
-
-
+            --app $FIREBASE_APP_ID \
+            --release-notes "$(cat release_notes.txt)" \
+            --groups "tested"
 
       - name: Remove credentials file
-        if: success() || failure()
-        run: |
-          rm firebase-service-account.json
+        if: always()
+        run: rm firebase-service-account.json
